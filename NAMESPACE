@@ -1,2 +1,1 @@
 useDynLib(SSLfish)
-exportPattern("^[[:alpha:]]+")

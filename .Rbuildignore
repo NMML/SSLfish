@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^src/RcppExports\\.cpp$
+^src/rcpp_hello_world\\.cpp$
+^R/RcppExports\\.R$
+^manuscript$

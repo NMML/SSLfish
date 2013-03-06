@@ -1,11 +1,19 @@
 Package: SSLfish
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Simulateeffects of fisheries removal of prey on Steller sea lion
+    abundance
+Version: 0.1
 Date: 2013-03-06
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What Licence is it under ?
-Depends: Rcpp (>= 0.10.2)
+Author: Devin Johnson and Paul Conn
+Maintainer: Devin Johnson <devin.johnson@noaa.gov>
+Description: This package simultaneously simulates a sea lion population, prey
+    base, and fisheries removal of prey. The primary goal is to investiagte the
+    validity of approaches used previously in the literature to assess the
+    effects of fishing on the abundance of Steller sea lions.
+License: Unlimited
+Depends:
+    Rcpp (>= 0.10.2)
 LinkingTo: Rcpp
+Collate:
+    'RcppExports.R'
+    'SSLfish-package.R'
