@@ -95,7 +95,7 @@ fish mortality as a function of both fishing effort and SSL predation, where ann
 
 \subsubsection{Stellar sea lion model}
 
-We based SSL dynamics loosely on the age-structured (`HFYS') Leslie-matrix model described by \citet{HolmesEtAl2007}, who summarized female fecundity and survival probability for SSL for ages $0-30$ (survival probability was assumed zero after age 30).  This model assumes a post-breeding census, coinciding with annual aerial surveys of rookeries and haul-outs in the Gulf of Alaska and Aleutian islands in June and July.  As presented, this `base' Leslie-matrix has a dominant eigenvalue of 1.0014, which is indicative of a stable population (at least in absence of demographic stochasticity).
+We based SSL dynamics loosely on the age-structured, female-only (`HFYS') Leslie-matrix model described by \citet{HolmesEtAl2007}, who summarized female fecundity and survival probability for SSL for ages $0-30$ (survival probability was assumed zero after age 30).  This model assumes a post-breeding census, coinciding with annual aerial surveys of rookeries and haul-outs in the Gulf of Alaska and Aleutian islands in June and July.  As presented, this `base' Leslie-matrix has a dominant eigenvalue of 1.0014, which is indicative of a stable population (at least in absence of demographic stochasticity).
 
 To make SSL demography dependent on the number of fish, we allowed either fecundity at age ($f_{a,t,k}$) or survival at age ($S_{a,t,k}$) (Table \ref{tab:model}) to be dependent on the ratio of fish to sea lion biomass.  As each of these parameters is bounded in the $(0,1)$ interval, we included simple formulations where
 \begin{linenomath}
@@ -146,10 +146,10 @@ We investigate the case where $K=?$ sites are surveyed by annual SSL aerial surv
 number of adults (age 2+) each year.  Aerial survey counts are an imperfect measure of abundance for two reasons.  First, not all animals are present on haul-outs or rookeries when surveys are conducted, because some proportion are out foraging.  Second, survey counts are subject to measurement error (not all animals present are counted).  \citet{HolmesEtAl2007} investigated the variability of counts from repeat aerial surveys that were conducted in the same year, and suggested that the coefficient of variation (CV) for these counts was $\approx 5\%$.  We used this value to induce measurement error on observed counts, assuming that 
 \begin{linenomath}
   \begin{equation}
-     I_{t,k} \sim {\rm Normal}(N_{2+,t,k}^*,[0.05 N_{2+,t,k}^*]^2),
+     I_{t,k} \sim {\rm Normal}(2N_{2+,t,k}^*,[0.1 N_{2+,t,k}^*]^2),
   \end{equation}
 \end{linenomath}
-where $I_{t,k}$ gives the adult survey count at site $k$ at time $t$ and $N_{2+,t,k}^*=\sum_{a=2}^30 N_{a,t,k}^*$ (in practice, we rounded $I_{t,k}$ to the closest integer after simulation measurement error).  We acknowledge that the small CV of 0.05 understates likely variation in the relationship between survey counts and underlying abundance; for instance, the portion of animals available for sampling each year may change if the time spent foraging changes (e.g., in responses to prey abundance).  Nevertheless, our approach is consistent with the goal of maximizing power to detect prey removal effects on SSL abundance.
+where $I_{t,k}$ gives the adult survey count at site $k$ at time $t$ and $N_{2+,t,k}^*=\sum_{a=2}^30 N_{a,t,k}^*$ (in practice, we rounded $I_{t,k}$ to the closest integer after simulation measurement error).  Note that female abundance ($N_{2+,t,k}^*$) is doubled to account for an assumed 50/50 sex ratio.  We acknowledge that the small CV of 0.05 understates likely variation in the relationship between survey counts and underlying abundance; for instance, the portion of animals available for sampling each year may change if the time spent foraging changes (e.g., in responses to prey abundance).  Nevertheless, our approach is consistent with the goal of maximizing power to detect prey removal effects on SSL abundance.
 
 Also investigate a pup scenario?
 
@@ -203,13 +203,14 @@ Quantity & & Symbol & & Description or definition \\
 \hline
 \endlastfoot
 \multicolumn{1}{l}{\textbf{Stellar sea lion dynamics}}\\
-Numbers at age & & $N_{a,t,k}^*$ & & Number of age $a$ SSL during surveys in year $t$ at site $k$\\
-Biomass at age & & $B_{a,t,k}^*$ & & Biomass of age $a$ SSL during surveys in year $t$ at site $k$\\
-Total biomass & & $B_{t,k}^*$ & & Total SSL biomass at site $k$ during surveys in year $t$ ($B_{t,k}^*=\sum_a B_{a,t,k}$) \\
+Numbers at age & & $N_{a,t,k}^*$,$N_{a,t,k}^{**}$ & & Number of age $a$ female (male) SSL during surveys in year $t$ at site $k$ (note that we assume a 50/50 sex ratio, such that $N_{a,t,k}^*=N_{a,t,k}^{**}$\\
+Female biomass at age & & $B_{a,t,k}^*$ & & Biomass of age $a$ female SSL during surveys in year $t$ at site $k$\\
+Male biomass at age & & $B_{a,t,k}^{**}$ & & Biomass of age $a$ male SSL during surveys in year $t$ at site $k$\\
+Total biomass & & $B_{t,k}^*$ & & Total SSL biomass at site $k$ during surveys in year $t$ ($B_{t,k}^*=\sum_a B_{a,t,k}^*+B_{a,t,k}^{**}$) \\
 Annual survival & & $S_{a,t,k}$ & & Probability of age $a$ SSL survival from year $t$ to year $t+1$ at site $k$ \\
 Fecundity & & $f_{a,t,k}$ & & Expected number of pups per age $a$ SSL female in year $t$ at site $k$ \\
 Leslie matrix model & & ${\bf A}_{t,k}$ & & Leslie matrix model (composed of $S$ and $f$ values) for SSL dynamics \\
-Abundance at age & & ${\bf N}_{t+1,k}$ & & ${\bf N}_{t+1,k}={\bf A}_{t,k} {\bf N}_{t,k}$, where \newline ${\bf N}_{t,k}$ is an abundance-at-age vector \\
+Female abundance at age & & ${\bf N}_{t+1,k}^*$ & & ${\bf N}_{t+1,k}={\bf A}_{t,k} {\bf N}_{t,k}$, where \newline ${\bf N}_{t,k}^*$ is an abundance-at-age vector \\
 \midrule
 \multicolumn{1}{l}{\textbf{Fish dynamics}}\\
 Weight-at-age & & $w_a$ & & $w_a = [ 1 + \exp(-b^{\rm wgt}(a-a_{50}^{wgt})) ]^{-1}$ \\
