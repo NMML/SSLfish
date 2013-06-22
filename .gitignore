@@ -8,3 +8,4 @@ src/*.dll
 src/RcppExports.cpp
 src/rcpp_hello_world.cpp
 R/RcppExports.R
+.DS_Store
