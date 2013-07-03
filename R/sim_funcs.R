@@ -1,8 +1,16 @@
-ssl.fish.sim <- function(parList, burn1, burn2, iter){
-  nsite <- parList$nsite
+
+###
+### Functions to increment populations by one year
+###
+
+### Sea lion functions
+library(compiler)
+
+inc.N.ssl <- function(A.list, N.ssl.list){
   
 }
 
+<<<<<<< HEAD
 
 get.recruitment <- function(Fvars,SSB){
   0.8*Fvars$R0*Fvars$h*SSB/(0.2*Fvars$phi0*Fvars$R0*(1-Fvars$h)+(Fvars$h-0.2)*SSB)*exp(rnorm(1,0,Fvars$sigma_R))
@@ -65,3 +73,25 @@ project.fish.1yr<-function(Fvars,Svars,FLvars,n.sites,iyr){
   Fvars$B[,iyr]=Fvars$N[,iyr,]%*%(Fvars$Wgt*Fvars$Sel)
   Fvars
 } 
+=======
+inc.S <- function(B.star.list, B.list, param.S.list){
+  
+}
+
+inc.f <- function(B.star.list, B.list, param.f.list){
+  
+}
+
+make.A.list <- cmpfun(function(f.list, S.list, mal2femRatio){
+  K <- length(f.list)
+  n.age <- length(f.list[[1]])
+  out <- replicate(K, matrix(0,2*n.age,2*n.age), simplify=FALSE)
+  for(i in 1:K){
+    out[[i]][1,1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
+    out[[i]][2:n.age, 1:(n.age-1)] <- diag(S.list[[i]][-n.age])
+    out[[i]][(n.age+1),1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
+    out[[i]][(n.age+2):(2*n.age), (n.age+1):(2*n.age-1)] <- diag((mal2femRatio*S.list[[i]])[-n.age])
+  } 
+  return(out)
+})
+>>>>>>> a31d7b4863937dae6d33001129e6e24e724ff073

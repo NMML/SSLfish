@@ -4,7 +4,7 @@ Title: Simulateeffects of fisheries removal of prey on Steller sea lion
     abundance
 Version: 0.1
 Date: 2013-03-06
-Author: Devin Johnson and Paul Conn
+Author: Paul Conn and Devin Johnson
 Maintainer: Devin Johnson <devin.johnson@noaa.gov>
 Description: This package simultaneously simulates a sea lion population, prey
     base, and fisheries removal of prey. The primary goal is to investiagte the
@@ -12,8 +12,6 @@ Description: This package simultaneously simulates a sea lion population, prey
     effects of fishing on the abundance of Steller sea lions.
 License: Unlimited
 Depends:
-    Rcpp (>= 0.10.2)
-LinkingTo: Rcpp
+    compiler
 Collate:
-    'RcppExports.R'
     'SSLfish-package.R'

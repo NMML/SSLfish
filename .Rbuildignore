@@ -4,3 +4,4 @@
 ^src/rcpp_hello_world\\.cpp$
 ^R/RcppExports\\.R$
 ^manuscript$
+^misc_testing\\.R$
