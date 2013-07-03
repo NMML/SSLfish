@@ -10,24 +10,14 @@ logit <- function(x){
 }
 
 #function to evaluate double logistic function for fishery selectivity
-double.logistic<-function(a,eta1,eta2,alpha1,alpha2){
-  s.a=1/(1+exp(-eta1*(a-alpha1)))*(1-1/(1+exp(-eta2*(a-alpha2))))
+double.logistic<-function(A,eta1,eta2,kappa1,kappa2){
+  s.a=1/(1+exp(-eta1*(A-kappa1)))*(1-1/(1+exp(-eta2*(A-kappa2))))
   s.a=s.a/max(s.a)
 }
 
 #function to compute logistic function for maturity, weight @ age
-logistic<-function(a,eta1,alpha1){
-  m.a=(1+exp(-eta1*(a-alpha1)))^{-1}
+logistic<-function(A,a,b){
+  m.a=(1+exp(-b*(A-a)))^{-1}
   m.a/max(m.a)
 }
 
-BH.curve <- function(R0, h, SSB)
-
-#compute unfished spawning biomass per recruit
-unfished.bpr<-function(Maturity,Weight,M){
-  n.age=length(Maturity)
-  N=rep(1,n.age)
-  for(i in 1:n.age)N[i]=exp(-M*i)
-  N[n.age]=N[n.age]/(1-exp(-M))
-  sum(N*Maturity*Weight)
-}

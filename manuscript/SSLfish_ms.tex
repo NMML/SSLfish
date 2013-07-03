@@ -1,4 +1,4 @@
-\documentclass[nonumbib,leqno]{nrc1} 
+\documentclass[nonumbib,leqno]{nrc1}
 \usepackage{amssymb, amsmath, bm, epsfig,psfrag,graphicx}
 \usepackage[french, english]{babel}
 \usepackage{setspace}
@@ -105,10 +105,10 @@ To make SSL demography dependent on the number of fish, we allowed either fecund
 \end{linenomath}
 \begin{linenomath}
 \begin{equation*}
-{\rm logit}(f_{a,t,k})=\beta_{0,a} + \beta_1 B_{t,k}^*/B_{t,k}.
+{\rm log}(f_{a,t,k})=\beta_{0,a} + \beta_1 B_{t,k}^*/B_{t,k}.
 \end{equation*}
 \end{linenomath}
-Here, $S_{a,t,k}$ gives survival of age $a$ SSL in year $t$ of simulation for site $k$, $f_{a,t,k}$ gives SSL fecundity for age $a$ in year $t$ and site $k$, $B_{t,k}^*$ gives SSL biomass in year $t$ in site $k$, and $B_{t,k}$ gives fish biomass in year $t$ and site $k$ (for a complete list of notation, see Table \ref{tab:model}).  We calibrate parameters describing the hypothetical relationship between demographic parameters and relative biomass of SSL and prey at the start of year $t$ ($\alpha_0,\alpha_1,\beta_0,\beta_1$) to produce reasonable time series in a later section (see \ref{section:Calibration}).
+Here, $S_{a,t,k}$ gives survival of age $a$ SSL in year $t$ of simulation for site $k$, $f_{a,t,k}$ gives SSL fecundity for age $a$ in year $t$ and site $k$, $B_{t,k}^*$ gives SSL biomass in year $t$ in site $k$, and $B_{t,k}$ gives exploitable fish biomass in year $t$ and site $k$ (for a complete list of notation, see Table \ref{tab:model}).  We calibrate parameters describing the hypothetical relationship between demographic parameters and relative biomass of SSL and prey at the start of year $t$ ($\alpha_0,\alpha_1,\beta_0,\beta_1$) to produce reasonable time series in a later section (see \ref{section:Calibration}).
 
 \subsubsection{Prey (fish) model}
 
@@ -116,9 +116,11 @@ A variety of commercially important fish stocks are affected by time-area closur
 We write total mortality rate for a given fish age class $a$ at time $t$ at site $k$ as $Z_{a,t,k}=M + F_{t,k}^* + F_{a,t,k}$, where $M$ gives
 natural mortality, $F_{t,k}^*$ gives a mortality rate attributable to SSL in site $k$ in year $t$ of simulation, and $F_{a,t,k}$ gives time- and age-specific fishing morality (recall that notation is also defined in Table \ref{tab:model}).  Recent assessments of walleye pollock, pacific cod, and Atka mackerel stocks \citep[e.g.][]{PollockAssessment2011,PacCodAssessment2011,AtkaAssessment2012} indicated natural mortality rates in the 0.3-0.34 range.  However, these figures include all natural mortality, including SSL predation (which we model separately).  For our hypothetical fish stock, we set $M=0.2$ during simulations.
 
-We had little information on age- or size-selectivity of target species by SSL, so considered all fish age classes as fully selected by SSL predation.  By contrast, we modeled fishing mortality, $F_{a,t,k}$, as a product of an age-specific selectivity curve and a fully selected fishing mortality rate that is itself a function of fishing effort, such that $F_{a,t,k}=q E_{t,k} s_a$, where $E_{t,k}$ summarizes fishing effort for site $k$ in year $t$, $s_a$ describes selectivity at age, and $q$ is a catchability coefficient.  Recent assessments of fish stocks in the Bering sea used flexible selectivity functions that were allowed to evolve over time; these pointed to dome-shaped selectivity functions in the majority of cases.  For simulations, we used a dome-shaped double logistic model constructed so as to approximate the general shape obtained in the assessments (Fig. \ref{fig:at_age}, Table \ref{tab:model}).  For further description of effort and catchability, we refer the reader to subsequent sections \ref{section:Fleet} and \ref{section:Calibration}, respectively.
+We modeled fishing mortality, $F_{a,t,k}$, as a product of an age-specific selectivity curve and a fully selected fishing mortality rate that is itself a function of fishing effort, such that $F_{a,t,k}=q E_{t,k} s_a$, where $E_{t,k}$ summarizes fishing effort for site $k$ in year $t$, $s_a$ describes selectivity at age, and $q$ is a catchability coefficient.  Recent assessments of fish stocks in the Bering sea used flexible selectivity functions that were allowed to evolve over time; these pointed to dome-shaped selectivity functions in the majority of cases.  For simulations, we used a dome-shaped double logistic model constructed so as to approximate the general shape obtained in the assessments (Fig. \ref{fig:at_age}, Table \ref{tab:model}).  For further description of effort and catchability, we refer the reader to subsequent sections \ref{section:Fleet} and \ref{section:Calibration}, respectively.
 
-For SSL-related mortality, we imposed a model of the form $F_{t,k}^*=\delta N_{t,k} B_{t,k}^*$, where $N_{t,k}$ gives the total number of fish in population $k$ at time $t$, $B_{t,k}^*$ gives the SSL biomass at time $t$, and $\delta$ gives a capture efficiency parameter. This is a similar functional form as used in classic Lotka-Volterra predator-prey models \citep[see e.g.][]{Gotelli2001}, with the modification that we use biomass (instead of numbers) of SSL to allow for the fact that larger sea lions will likely consume more fish than smaller ones.  Once again, we leave it until a later section (\ref{section:Calibration}) to determine reasonable values for $\delta$.
+For SSL-related mortality, we imposed a model of the form $F_{a,t,k}^*=\delta s_a^* N_{t,k} B_{t,k}^*$, where $s_a^*$ gives the relative selectivity of SSL on age $a$ fish, $N_{t,k}$ gives the total number of fish in population $k$ at time $t$, $B_{t,k}^*$ gives the SSL biomass at time $t$, and $\delta$ gives a capture efficiency parameter. This is a similar functional form as used in classic Lotka-Volterra predator-prey models \citep[see e.g.][]{Gotelli2001}, with the modification that we use biomass (instead of numbers) of SSL to allow for the fact that larger sea lions will likely consume more fish than smaller ones.  Once again, we leave it until a later section (\ref{section:Calibration}) to determine reasonable values for $\delta$.
+
+\citet{ZeppelinEtAl2004} reported substantial overlap between sizes of walleye pollock and Atka mackerel harvested by SSL and commercial trawl fisheries, although the distribution of fish lengths selected by SSL was shifted to the left (i.e., towards smaller-sized fish).  SSL selectivity likely varies by a number of factors, including year, SSL size/age, fish availability, and location \citep{ZeppelinEtAl2004}.  For our simulation study, we constructed a double logistic selectivity that was offset from fishery selectivity to have a modal age that was two years less (Fig. \ref{fig:at_age}, Table \ref{tab:model}).
 
 Annual recruitment at each site was modeled using a Beverton-Holt spawner-recruit curve subject to lognormal error.  A modern parameterization of this model is
 \begin{linenomath}
@@ -135,7 +137,7 @@ We considered two scenarios for fleet dynamics, both of which assume that total 
 over the course of simulation time (at least in portions of simulation time series where fishing occurs).  In the first scenario, we allow fishing effort to be annually redistributed according to a ${\rm Dirichlet}(1,1,\hdots,1)$ distribution.  This formulation approximates the situation where experimental treatments (fishing) are applied randomly to experimental units (sites).  As such it is clearly unrealistic, as fishing vessels will likely try to optimize catch by going to areas where there are more fish, perhaps subject
 to economic and time constraints (e.g., distances from port).  Nevertheless, this scenario likely provides the greatest power to detect relationships between SSL survey counts and fishing variables.
 
-Our second scenario assumes that fishing fleets redistribute effort each year according to the relative number of fish at each site.  This scenario is also clearly unrealistic, as it assumes fishers have omniscient knowledge about the distribution and abundance of fish, and no economic constraints influencing their movements (e.g. fuel costs, time).  However, this distribution of effort represents an ideal free distribution \citep{FretwellLucas1970}, which has a rich use in ecology.  It also represents the opposite end of the spectrum from the first scenario, where there was no relationship between fishing effort and fish abundance.
+Our second scenario assumes that fishing fleets redistribute effort each year according to the exploitable biomass of fish at each site.  This scenario is also clearly unrealistic, as it assumes fishers have omniscient knowledge about the distribution and abundance of fish, and no economic constraints influencing their movements (e.g. fuel costs, time).  However, this distribution of effort represents an ideal free distribution \citep{FretwellLucas1970}, which has a rich use in ecology.  It also represents the opposite end of the spectrum from the first scenario, where there was no relationship between fishing effort and fish abundance.
 
 For each scenario, we calculated catch at each site using the Baranov catch equation \citep{Baranov1918}:
 
@@ -143,7 +145,7 @@ For each scenario, we calculated catch at each site using the Baranov catch equa
 \subsubsection{Survey models/measurement error}
 
 We investigate the case where $K=?$ sites are surveyed by annual SSL aerial surveys that count the total
-number of adults (age 2+) each year.  Aerial survey counts are an imperfect measure of abundance for two reasons.  First, not all animals are present on haul-outs or rookeries when surveys are conducted, because some proportion are out foraging.  Second, survey counts are subject to measurement error (not all animals present are counted).  \citet{HolmesEtAl2007} investigated the variability of counts from repeat aerial surveys that were conducted in the same year, and suggested that the coefficient of variation (CV) for these counts was $\approx 5\%$.  We used this value to induce measurement error on observed counts, assuming that 
+number of adults (age 2+) each year.  Aerial survey counts are an imperfect measure of abundance for two reasons.  First, not all animals are present on haul-outs or rookeries when surveys are conducted, because some proportion are out foraging.  Second, survey counts are subject to measurement error (not all animals present are counted).  \citet{HolmesEtAl2007} investigated the variability of counts from repeat aerial surveys that were conducted in the same year, and suggested that the coefficient of variation (CV) for these counts was $\approx 5\%$.  We used this value to induce measurement error on observed counts, assuming that
 \begin{linenomath}
   \begin{equation}
      I_{t,k} \sim {\rm Normal}(2N_{2+,t,k}^*,[0.1 N_{2+,t,k}^*]^2),
@@ -155,7 +157,7 @@ Also investigate a pup scenario?
 
 \subsection{Simulation design}
 
-We utilized a $2 \times 2$ factorial simulation design that included design points for each combination of fleet effort allocation (random or proportional to fish abundance) and SSL demographic component (whether fecundity or survival was related to prey availability).  For each design point, we conducted 1000 simulations, each of which had a similar overall design (Fig. \ref{fig:sim_diagram}).  
+We utilized a $2 \times 2$ factorial simulation design that included design points for each combination of fleet effort allocation (random or proportional to fish abundance) and SSL demographic component (whether fecundity or survival was related to prey availability).  For each design point, we conducted 1000 simulations, each of which had a similar overall design (Fig. \ref{fig:sim_diagram}).
 In each simulation, we randomly generated virgin fish recruitment ($R_{0,k}$) at each of $xx$ sites, and initialized prey and SSL abundance according to their stable age distributions \citep[cf.][]{Caswell2001}, assuming an initial abundance of 600 SSL at each site.  We then simulated dynamics of SSL and prey for 100 years in absence of fishing, a time period which allowed SSL abundance to stabilize with the number of prey available.  This approach also induced stochasticity in the age structure of both species (resulting from annual fish recruitment variation).  We then introduced fishing, and aerial surveys were simulated beginning 10 years later (these were conducted for the next 35 years of simulation time).  These time periods were selected to approximate the introduction of fishing pressure and the institution of aerial SSL surveys in the Bering Sea and Gulf of Alaska; for relevant fish stocks (e.g. Alaska pollock), heavy commercial fishing began to ramp up in the mid-late 1960s, with aerial surveys beginning in 1976.  The survey collection period of 35 years approximates data collection up through 2010.  For each simulation, we also used the time series of simulated recruitment deviations to calculate what SSL abundance would have been at the end of simulation time if there had been no fishing (i.e., if $F_{a,t,k}=0$).
 
 Following each simulation, we attempted to test whether SSL counts ($I_{t,k}$) were related to fishing variables ($C_{t,k}$,$L_{t,k}$,$U_{t,k}$) by fitting generalized estimating equations (GEE) to the data, where the response variable ($I_{t,k}$) was modeled using a Poisson error structure.  The GEE approach to data analysis was developed for analysis of longitudinal data \citep{LiangZeger1986}, where responses of individual subjects are possibly dependent (GEEs still assume that individual's responses are independent).  This formulation is a natural approach for the analysis of SSL survey counts, as ``responses" across years but within sites are autocorrelated.  In particular, we fit models where the expected count at site $k$ was modeled according to
@@ -190,7 +192,7 @@ the patterns of observed population decline exhibited in SSL datasets from 1976-
 \caption[Population \& Fisheries dynamics]{\large Notation and dynamical equations used to simulate
  hypothetical Stellar sea lion (SSL), fish, and fisheries data.} \label{tab:model} \\
 %\begin{tabular}{p{4cm}lll p{8cm}}
-\hline \hline 
+\hline \hline
 Quantity & & Symbol & & Description or definition \\
 \cline{1-1} \cline{3-3} \cline{5-5} \\
 \endfirsthead
@@ -223,7 +225,9 @@ Fishery mortality rate & & $F_{tk}$ & & $F_{tk}=q E_t$, Fully selected fishing m
 
 Fishing mortality rate at age & & $F_{a,t,k}$ & & $F_{a,t,k}=s_a F_{t,k}$ \\
 
-SSL predation rate  & & $F_{t,k}^*$ & & $F_{t,k}^*=\delta N_{t,k} B_{t,k}^*$ \\
+SSL selectivity  & & $s_a^*$ & &  $s_a^* = \frac{1}{1+\exp(-\eta_1^*(a-\kappa_1^*))} \left( 1- \frac{1}{1+\exp(-\eta_2^*(a-\kappa_2^*))} \right)$ (rescaled to have a maximum of 1.0)\\
+
+SSL predation rate  & & $F_{t,k}^*$ & & $F_{t,k}^*=\delta N_{t,k} B_{t,k}^* s_a^*$ \\
 
 Natural mortality rate & & $M$ & & Assumed constant (0.2) for all simulations \\
 
@@ -241,7 +245,9 @@ where $\epsilon_{t,k}^R \sim {\rm Normal}(0,\sigma_R)$, $\phi_0$ gives unfished 
 
 Total abundance by site & & $N_{t,k}$ & & $ \sum_a N_{a,t,k}$ \\
 
-Spawning biomass & & $SSB_{t,k}$ & & $S_{t,k}=\sum_a N_{a,t,k} w_a m_a$ \\
+Spawning biomass & & $SSB_{t,k}$ & & $SSB_{t,k}=\sum_a N_{a,t,k} w_a m_a$ \\
+
+Exploitable biomass & & $B_{t,k}$ & & $B_{t,k}= \sum_a N_{a,t,k} w_a s_a$\\
 
 \midrule
 
@@ -253,7 +259,7 @@ Fishing effort (directed) & & $E_{t,k}$ & & $ E_{t,k} = B_{t,k}/\sum_{k} B_{t,k}
 
 Catchability & & $q$ & & Relates fishing mortality rate to effort (see $F_{t,k}$ definition) \\
 
-Catch-at-age & & $C_{a,t,k}$ & & Calculated with Baranov catch equation: $C_{a,t,k}=F_{a,t,k}/Z_{a,t,k} (1-\exp(-Z_{a,t,k}) N_{a,t,k}$ \\ 
+Catch-at-age & & $C_{a,t,k}$ & & Calculated with Baranov catch equation: $C_{a,t,k}=F_{a,t,k}/Z_{a,t,k} (1-\exp(-Z_{a,t,k}) N_{a,t,k}$ \\
 
 Catch (numbers) & & $C_{t,k}$ & & $C_{t,k}=\sum_a C_{a,t,k}$ \\
 
@@ -277,7 +283,7 @@ set a priori.}
 \begin{tabular}{p{3cm}lll p{9cm}}
 \\
 \hline \hline
-Input variable & & Range & & Definition\\
+Input variable & & Value & & Definition\\
 \cline{1-1} \cline{3-3} \cline{5-5}
 \\
 \multicolumn{1}{l}{\textbf{Survey variables}}  \\
@@ -285,16 +291,17 @@ $Y_1$ & & 100 & & Number of simulation years with just SSL (no fishing) \\
 $Y_2$ & & 10 & & Number of years of fishing before aerial surveys begin \\
 $Y_3$ & & 30 & & Number of years with both fishing and simulated aerial surveys \\
 $K$ & & ??? & & Number of ``sites" (SSL populations)  \\
+$\sigma_I$ & & 0.05 & & Coefficient of variation (CV) for adult aerial survey counts \\
 \midrule
 \multicolumn{1}{l}{\textbf{SSL variables}}  \\
 $p$ & & 0.8 & & SSL availability probability \\
-$\alpha_{0,a}^\dag$ & & xx & & Intercept of SSL survival model (logit scale) \\
-$\alpha_1^\dag$ & & xx & & Slope parameter of SSL survival model (logit scale); controls per capita dependence
+$\alpha_{0,a}$ & & xx^\dag & & Intercept of SSL survival model (logit scale) \\
+$\alpha_1$ & & xx^\dag & & Slope parameter of SSL survival model (logit scale); controls per capita dependence
                      on prey abundance \\
-$\beta_{0,a}^\dag$ & & xx & & Intercept of SSL fecundity model (logit scale) \\
-$\beta_1^\dag$ & & xx & & Slope parameter of SSL fecundity model (logit scale); controls per capita dependence
+$\beta_{0,a}$ & & xx^\dag & & Intercept of SSL fecundity model (logit scale) \\
+$\beta_1$ & & xx^\dag & & Slope parameter of SSL fecundity model (logit scale); controls per capita dependence
                     on prey abundance \\
-$\delta^\dag$ & & xx & & Capture efficiency parameter describing the rate at which SSL/fish encounters result in fish mortality (such that $F_{t,k}^*=\delta N_{t,k} B_{t,k}^*$) \\
+$\delta$ & & xx^\dag & & Capture efficiency parameter describing the rate at which SSL/fish encounters result in fish mortality (such that $F_{t,k}^*=\delta N_{t,k} B_{t,k}^*$) \\
 \midrule
 \multicolumn{1}{l}{\textbf{Fish variables}}  \\
 $M$ & & 0.2 & & Natural mortality rate (in absence of SSL) \\ [2pt]
@@ -305,12 +312,15 @@ $a_{50}^{\rm mat}$ & & 5 & & Age at 50\% sexual maturity \\
 $b^{\rm mat}$ & & 1 & & Slope parameter for logistic maturity-at-age function \\
 $a_{50}^{\rm wgt}$ & & 5 & & Age at 50\% weight \\
 $b^{\rm wgt}$ & & 0.7 & & Slope parameter for logistic weight-at-age function \\
-$\eta_1$ & & 1.3 & & Slope of ascending limb of double logistic selectivity curve \\
-$\eta_2$ & & 1 & & Slope of descending limb of double logistic selectivity curve \\
+$\eta_1$ & & 1.3 & & Slope of ascending limb of double logistic selectivity curve (fishery)\\
+$\eta_2$ & & 1 & & Slope of descending limb of double logistic selectivity curve (fishery) \\
 $\kappa_1$ & & 4 & & Age at 50\% fishery selectivity (ascending) \\
 $\kappa_2$ & & 10 & & Age at 50\% fishery selectivity (descending) \\
-$\sigma_I$ & & 0.05 & & Coefficient of variation (CV) for aerial survey counts \\
-$ q^\dag $ & & xxx & & Catchability coefficient relating fishery effort ($E_{a,t,k}$) to apical fishing mortality \\
+$\eta_1^*$ & & 1.3 & & Slope of ascending limb of double logistic selectivity curve (SSL) \\
+$\eta_2^*$ & & 1 & & Slope of descending limb of double logistic selectivity curve (SSL) \\
+$\kappa_1^*$ & & 2 & & Age at 50\% SSL selectivity (ascending) \\
+$\kappa_2^*$ & & 8 & & Age at 50\% SSL selectivity (descending) \\
+$ q $ & & xxx^\dag & & Catchability coefficient relating fishery effort ($E_{a,t,k}$) to apical fishing mortality \\
 \bottomrule
 \end{tabular}
 \vspace{4in}
@@ -320,8 +330,8 @@ $ q^\dag $ & & xxx & & Catchability coefficient relating fishery effort ($E_{a,t
 \begin{center}
 \includegraphics[width= \textwidth]{At_age_plots.pdf}
 \end{center}
-\caption{An illustration of fishery selectivity-at-age (`Selectivity'), proportion of fish sexually
-mature by age (`Maturity'), and weight-at-age (`Weight'; standardized to have a maximum of 1.0) used
+\caption{A depiction of fishery selectivity-at-age (`Fleet selectivity'), Stellar sea lion selectivity (`SSL selectivity'), proportion of sexually
+mature fish by age (`Maturity'), and weight-at-age (`Weight'; standardized to have a maximum of 1.0) used
 in SSL-fisheries simulation analyses.}
 \label{fig:at_age}
 \end{figure}
