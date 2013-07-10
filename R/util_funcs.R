@@ -5,7 +5,7 @@ invLogit <- function(x){
 
 # logit link function
 logit <- function(x){
-  if(any(x<=0) | any(x>=1)) stop("x must lie in (0,1)")
+  if(any(x<0) | any(x>1)) stop("x must lie in (0,1)")
   log(x/(1-x))
 }
 
@@ -21,3 +21,7 @@ logistic<-function(A,a,b){
   m.a/max(m.a)
 }
 
+#Richards growth for SSL biomass
+richards=function(age, A, m, S0, t){
+  return((A^(1-m) - (A^(1-m) - S0^(1-m))*exp(-2*age*(1+m)/t))^(1/(1-m)))
+}

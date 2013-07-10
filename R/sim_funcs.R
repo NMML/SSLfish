@@ -4,13 +4,57 @@
 ###
 
 ### Sea lion functions
-library(compiler)
 
-inc.N.ssl <- function(A.list, N.ssl.list){
-  
+project.ssl.1yr=function(SSLvars, curr.yr){
+  for(i in 1:n.sites) SSLvars$N[i,curr.yr+1,]=apply(A[i,,],1,function(a,N){sum(rbinom(64,N,a))}, N=SSLvars$N[i,curr.yr,])  
 }
 
-<<<<<<< HEAD
+# Set sea lion survival and fecundity vectors
+set.ssl.vars=function(n.sites, n.years, SSLvital=NULL){
+  if(is.null(SSLvital)){
+    #data(HFYS_appendix_C)
+    HFYS_appendix_C <- read.csv("data/HFYS_appendix_C.csv")
+    SSLvital=list(alpha0=logit(HFYS_appendix_C$S.HFYS),
+                  alpha1=-1,
+                  beta0=c(logit(2*HFYS_appendix_C$f.HFYS[-1]),-Inf),
+                  beta1=-1,
+                  mal2femSurv=c(rep(1,32)),
+                  Ntot=round(240000*rep(1/n.sites, n.sites)))
+  }
+  SSLvars=list(n.sites=n.sites, n.yrs=n.yrs, Ntot=SSLvital$Ntot, p=0.5, delta=1,
+    alpha0=SSLvital$alpha0, alpha1=SSLvital$alpha1, beta0=SSLvital$beta0, beta1=SSLvital$beta1, 
+               mal2femSurv=SSLvital$mal2femSurv,
+    mass=list(male=c(22,richards(1:31,A=681.112,m=8.041,S0=101.148,t=12.365)), 
+              fem=c(20,richards(1:31,A=287.829,m=-0.690,S0=1.2E-04,t=4.225))),
+    S=array(0, dim=c(n.sites, n.yrs, 32)),
+    f=array(0,dim=c(n.sites, n.yrs, 32)),
+    N=array(0,dim=c(n.sites, n.yrs, 2*32)),
+    B=matrix(0,n.sites,n.yrs),
+    I=matrix(0,n.sites,n.yrs)
+  )
+  # initialize SSL survival and fecundity arrays (dim = site x year x age) 
+  for(i in 1:n.sites) SSLvars$S[i,1,]=invLogit(SSLvars$alpha0)
+  for(i in 1:n.sites) SSLvars$f[i,1,]=invLogit(SSLvars$beta0)
+  SSLvars$A=set.A.array(SSLvars,1)
+  for(i in 1:n.sites) SSLvars$N[i,1,]=round(SSLvars$Ntot[i]*Re(eigen(A[i,,])$vectors[,1]/sum(eigen(A[i,,])$vectors[,1])))
+  # Need B and I
+}
+
+# Create SSL Leslie projection matrix from life history params (dim = site x age x age)
+set.A.array <- function(SSLvars,yr){
+  A <- array(0,dim=c(SSLvars$n.sites,2*32,2*32))
+  for(i in 1:SSLvars$n.sites){
+    A[i,1,1:32] <- 0.5*SSLvars$f[i,yr,]*SSLvars$S[i,yr,]
+    A[i,2:32,1:31] <- diag(SSLvars$S[i,yr,-32])
+    A[i,33,1:32] <- 0.5*SSLvars$f[i,yr,]*SSLvars$S[i,yr,]
+    A[i,34:(2*32),33:(2*32-1)] <- diag(c(SSLvars$mal2femSurv*SSLvars$S[i,yr,])[-32])
+  } 
+  return(A)
+}
+############################
+
+
+### Fish functions
 
 get.recruitment <- function(Fvars,SSB){
   0.8*Fvars$R0*Fvars$h*SSB/(0.2*Fvars$phi0*Fvars$R0*(1-Fvars$h)+(Fvars$h-0.2)*SSB)*exp(rnorm(1,0,Fvars$sigma_R))
@@ -20,14 +64,16 @@ get.recruitment <- function(Fvars,SSB){
 unfished.bpr<-function(Fvars){
   n.age=length(Fvars$Mat)
   N=rep(1,n.age)
-  for(i in 1:n.age)N[i]=exp(-Fvars$M*i)
+  #for(i in 1:n.age)N[i]=exp(-Fvars$M*i)
+  N = exp(-Fvars$M*c(1:n.age))
   N[n.age]=N[n.age]/(1-exp(-Fvars$M))
   sum(N*Fvars$Mat*Fvars$Wgt)
 }
 
 init.fish<-function(Fvars,isite){
   N=rep(1,Fvars$n.age)
-  for(i in 1:Fvars$n.age)N[i]=exp(-Fvars$M*i)
+  #for(i in 1:Fvars$n.age)N[i]=exp(-Fvars$M*i)
+  N = exp(-Fvars$M*c(1:n.age))
   N[n.age]=N[Fvars$n.age]/(1-exp(-Fvars$M))
   N*Fvars$R0[isite]
 }
@@ -73,25 +119,5 @@ project.fish.1yr<-function(Fvars,Svars,FLvars,n.sites,iyr){
   Fvars$B[,iyr]=Fvars$N[,iyr,]%*%(Fvars$Wgt*Fvars$Sel)
   Fvars
 } 
-=======
-inc.S <- function(B.star.list, B.list, param.S.list){
-  
-}
 
-inc.f <- function(B.star.list, B.list, param.f.list){
-  
-}
 
-make.A.list <- cmpfun(function(f.list, S.list, mal2femRatio){
-  K <- length(f.list)
-  n.age <- length(f.list[[1]])
-  out <- replicate(K, matrix(0,2*n.age,2*n.age), simplify=FALSE)
-  for(i in 1:K){
-    out[[i]][1,1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
-    out[[i]][2:n.age, 1:(n.age-1)] <- diag(S.list[[i]][-n.age])
-    out[[i]][(n.age+1),1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
-    out[[i]][(n.age+2):(2*n.age), (n.age+1):(2*n.age-1)] <- diag((mal2femRatio*S.list[[i]])[-n.age])
-  } 
-  return(out)
-})
->>>>>>> a31d7b4863937dae6d33001129e6e24e724ff073
