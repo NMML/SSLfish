@@ -5,9 +5,11 @@
 
 ### Sea lion functions
 
-project.ssl.1yr=function(SSLvars, curr.yr){
-  for(i in 1:n.sites) SSLvars$N[i,curr.yr+1,]=apply(A[i,,],1,function(a,N){sum(rbinom(64,N,a))}, N=SSLvars$N[i,curr.yr,])  
+project.ssl.1yr=function(SSLvars, yr){
+  for(i in 1:n.sites) SSLvars$N[i,yr+1,]=apply(A[i,,],1,function(a,N){sum(rbinom(64,N,a))}, N=SSLvars$N[i,yr,])  
 }
+
+survey.ssl=function(SSLvars, yr)
 
 # Set sea lion survival and fecundity vectors
 set.ssl.vars=function(n.sites, n.years, SSLvital=NULL){
