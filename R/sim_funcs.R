@@ -20,26 +20,28 @@ set.ssl.vars=function(n.sites, n.years, SSLvital=NULL){
                   alpha1=-1,
                   beta0=c(logit(2*HFYS_appendix_C$f.HFYS[-1]),-Inf),
                   beta1=-1,
-                  mal2femSurv=c(rep(1,32)),
+                  mal2femSurv=c(c(HFYS_appendix_C$S.MALE.CP/HFYS_appendix_C$S.CP)[-32],0),
                   Ntot=round(240000*rep(1/n.sites, n.sites)))
   }
-  SSLvars=list(n.sites=n.sites, n.yrs=n.yrs, Ntot=SSLvital$Ntot, p=0.5, delta=1,
+  SSLvars=list(n.sites=n.sites, n.yrs=n.yrs, Ntot=SSLvital$Ntot, p=0.5, delta=1E-8,
     alpha0=SSLvital$alpha0, alpha1=SSLvital$alpha1, beta0=SSLvital$beta0, beta1=SSLvital$beta1, 
                mal2femSurv=SSLvital$mal2femSurv,
-    mass=list(male=c(22,richards(1:31,A=681.112,m=8.041,S0=101.148,t=12.365)), 
-              fem=c(20,richards(1:31,A=287.829,m=-0.690,S0=1.2E-04,t=4.225))),
+    mass=list(fem=c(20,richards(1:31,A=287.829,m=-0.690,S0=1.2E-04,t=4.225)),
+               male=c(22,richards(1:31,A=681.112,m=8.041,S0=101.148,t=12.365))),
     S=array(0, dim=c(n.sites, n.yrs, 32)),
     f=array(0,dim=c(n.sites, n.yrs, 32)),
     N=array(0,dim=c(n.sites, n.yrs, 2*32)),
     B=matrix(0,n.sites,n.yrs),
-    I=matrix(0,n.sites,n.yrs)
+    I.np=matrix(0,n.sites,n.yrs),
+    I.pup=matrix(0,n.sites,n.yrs)
   )
   # initialize SSL survival and fecundity arrays (dim = site x year x age) 
   for(i in 1:n.sites) SSLvars$S[i,1,]=invLogit(SSLvars$alpha0)
   for(i in 1:n.sites) SSLvars$f[i,1,]=invLogit(SSLvars$beta0)
   SSLvars$A=set.A.array(SSLvars,1)
-  for(i in 1:n.sites) SSLvars$N[i,1,]=round(SSLvars$Ntot[i]*Re(eigen(A[i,,])$vectors[,1]/sum(eigen(A[i,,])$vectors[,1])))
-  # Need B and I
+  for(i in 1:n.sites) SSLvars$N[i,1,]=round(SSLvars$Ntot[i]*Re(eigen(SSLvars$A[i,,])$vectors[,1]/sum(eigen(SSLvars$A[i,,])$vectors[,1])))
+  for(i in 1:n.sites) SSLvars$B[i,1]=crossprod(unlist(SSLvars$mass),SSLvars$N[i,1,])
+  for(i in 1:n.sites) SSLvars$I.pup[i,1] = rbinom(1,size=SSLvars$N[i,1,1],prob=0.95)
 }
 
 # Create SSL Leslie projection matrix from life history params (dim = site x age x age)
