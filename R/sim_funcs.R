@@ -10,7 +10,6 @@ inc.N.ssl <- function(A.list, N.ssl.list){
   
 }
 
-<<<<<<< HEAD
 
 get.recruitment <- function(Fvars,SSB){
   0.8*Fvars$R0*Fvars$h*SSB/(0.2*Fvars$phi0*Fvars$R0*(1-Fvars$h)+(Fvars$h-0.2)*SSB)*exp(rnorm(1,0,Fvars$sigma_R))
@@ -94,4 +93,4 @@ make.A.list <- cmpfun(function(f.list, S.list, mal2femRatio){
   } 
   return(out)
 })
->>>>>>> a31d7b4863937dae6d33001129e6e24e724ff073
+
