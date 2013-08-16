@@ -2,20 +2,32 @@
 ### Simulation functions ###
 ############################
 
-run.1.sim=function(par, n.sites, n.yrs){
-  # par = c(p, delta, alpha0, alpha1, beta0, beta1,...)
-  SSLvital=list(p=par[1], delta=par[2], alpha0=par[3], alpha1=par[4], beta0=par[5], beta1=par[6])
-  Svars=set.ssl.par(n.sites,n.yrs,SSLvital)
-  Fvars=set.fish.par(...)
-  Fvars=???
+run.1.sim=function(par, sim.opts, n.sites, n.yrs, burnin){
+  #set.seed(12345)
+  #n.sites=10
+  #n.yrs=100
+  #burnin=25
+  #par = c(1E-15,.000001,1,1,-1)
+  #sim.opts=list(dem=1,eff=1)
+  if(sim.opts$dem==1)SSLvital=list(p=0.5, delta=par[1],alpha0=exp(par[3]),beta0=exp(par[4]),alpha1=-exp(par[5]), beta1=0) #put log link on alpha0, beta0 to prevent '0' Holmes estimates from becoming infinite on the log- or logit- scale
+  else SSLvital=list(p=0.5, delta=par[1],alpha0=exp(par[3]),beta0=exp(par[4]),alpha1=0,beta1=-exp(par[5]))
+  Svars=set.ssl.pars(n.sites,n.yrs,SSLvital)
+  Fvars=set.fish.pars(n.sites,n.yrs)
+  FLvars=set.fleet.pars(n.sites,n.yrs)
+  if(burnin==0)FLvars=update.fleet.pars(n.sites,1,Fvars,sim.opts,burnin)
+  FLvars$q=exp(par[2])
   for(t in 1:(n.yrs-1)){
-      Svars=project.ssl.1yr(Svars,t)
-      Fvars=projects.fish.1yr(Fvars,Svars,n.sites,t)
+      Svars=project.ssl.1yr(Svars,t) #this function projects from t to t+1
+      Fvars=project.fish.1yr(Fvars,Svars,FLvars,n.sites,t+1) #this function projects from t-1 to t
+      FLvars=update.fleet.pars(n.sites,t+1,Fvars,FLvars,sim.opts,burnin)
       for(k in 1:n.sites){
-        Svars$f[k,t+1,]=invLogit(Svars$beta0+beta1*(Svars$B[k,t]/Fvars$B[k,t]) + rnorm(32,0,1.0E-8))
-        Svars$S[k,t+1,]=invLogit(Svars$alpha0+alpha1*(Svars$B[k,t]/Fvars$B[k,t]) + rnorm(32,0,1.0E-8))
+        Svars$f[k,t+1,]=invLogit(Svars$beta0+Svars$beta1*(Svars$B[k,t]/Fvars$X[k,t]) + rnorm(32,0,1.0E-8))
+        Svars$S[k,t+1,]=invLogit(Svars$alpha0+Svars$alpha1*(Svars$B[k,t]/Fvars$X[k,t]) + rnorm(32,0,1.0E-8))
       }
+      Svars$A=set.A.array(Svars,t+1)
   }
+  Svars$Ntot=apply(Svars$N,2,'sum')
+  Out=list(Fvars=Fvars,Svars=Svars,FLvars=FLvars)
 }
 
 ##########################
@@ -26,10 +38,15 @@ project.ssl.1yr=function(Svars, yr){
   # yr = current year i.e., projects from yr to yr+1
   for(k in 1:Svars$n.sites){
     Svars$N[k,yr+1,]=apply(Svars$A[k,,],1,function(a,N){sum(rbinom(64,N,a))}, N=Svars$N[k,yr,])  
+    #cur.lam=Svars$N[k,yr,]%*%Svars$A[k,1,]
+    #Svars$N[k,yr+1,c(1,33)]=rpois(2,cur.lam)
     Svars$B[k,yr+1]=crossprod(unlist(Svars$mass),Svars$N[k,yr+1,])
-    Svars$I.pup[k,yr+1]=rbinom(1, size=Svars$N[k,yr+1,1]+Svars$N[k,yr+1,33], prob=0.95)
-    N.2p = rbinom(1, size=sum(Svars$N[k,yr+1,3:32])+sum(Svars$N[k,yr+1,35:64]), prob=Svars$p)
-    Svars$I.np[k,yr+1]=max(0,round(rnorm(1, N.2p, 0.05*N.2p)))
+    #Svars$I.pup[k,yr+1]=rbinom(1, size=Svars$N[k,yr+1,1]+Svars$N[k,yr+1,33], prob=0.95)
+    N.p=Svars$N[k,yr+1,1]+Svars$N[k,yr+1,33]
+    Svars$I.pup[k,yr+1]=rbinom(1,N.p,0.95)
+    #N.2p = rbinom(1, size=sum(Svars$N[k,yr+1,3:32])+sum(Svars$N[k,yr+1,35:64]), prob=Svars$p)
+    N.2p = Svars$p*(sum(Svars$N[k,yr+1,2:32])+sum(Svars$N[k,yr+1,34:64]))
+    Svars$I.np[k,yr+1]=N.2p*exp(rnorm(1,0,0.05))
   }  
   return(Svars)
 }
@@ -37,18 +54,21 @@ project.ssl.1yr=function(Svars, yr){
 
 # Set sea lion survival and fecundity vectors
 set.ssl.pars=function(n.sites, n.yrs, SSLvital=NULL){
-  attach(HFYS_appendix_C)
-  if(is.null(SSLvital)){
-    #data(HFYS_appendix_C) #Switch this on when package is built; remove next line
-    #HFYS_appendix_C <- read.csv("data/HFYS_appendix_C.csv")
+  #data(HFYS_appendix_C) #Switch this on when package is built; remove next line
+  HFYS_appendix_C <- read.csv("data/HFYS_appendix_C.csv")
+  if(is.null(SSLvital)){  ##right now, this would set the scaling parameters alpha0,beta0 to 1
     SSLvital=list(alpha0=logit(HFYS_appendix_C$S.HFYS),
                   alpha1=-1,
-                  beta0=c(logit(2*HFYS_appendix_C$f.HFYS[-1]),-Inf),
+                  beta0=c(logit(HFYS_appendix_C$f.HFYS[-1]),-Inf),
                   beta1=-1,
-                  delta=1E-8,
+                  delta=1E-14,
                   p=0.5)
   }
-  Svars=list(n.sites=n.sites, n.yrs=n.yrs,Ntot=round(240000*rep(1/n.sites, n.sites)), p=SSLvital$p, delta=SSLvital$delta,
+  else{
+    SSLvital$alpha0=logit(HFYS_appendix_C$S.HFYS)*SSLvital$alpha0
+    SSLvital$beta0=c(logit(HFYS_appendix_C$f.HFYS[-1])*SSLvital$beta0,-Inf)             
+  }
+  Svars=list(n.sites=n.sites, n.yrs=n.yrs,Ntot=round(250000*rep(1/n.sites, n.sites)), p=SSLvital$p, delta=SSLvital$delta,
     alpha0=SSLvital$alpha0, alpha1=SSLvital$alpha1, beta0=SSLvital$beta0, beta1=SSLvital$beta1, 
                mal2femSurv=c(c(HFYS_appendix_C$S.MALE.CP/HFYS_appendix_C$S.CP)[-32],0),
     mass=list(fem=c(20,richards(1:31,A=287.829,m=-0.690,S0=1.2E-04,t=4.225)),
@@ -68,8 +88,9 @@ set.ssl.pars=function(n.sites, n.yrs, SSLvital=NULL){
   for(i in 1:n.sites) Svars$B[i,1]=crossprod(unlist(Svars$mass),Svars$N[i,1,])
   for(i in 1:n.sites) Svars$I.pup[i,1] = rbinom(1,size=Svars$N[i,1,1]+Svars$N[i,1,33],prob=0.95)
   for(i in 1:n.sites){
-    N.2p=rbinom(1, size=sum(Svars$N[i,1,3:32])+sum(Svars$N[i,1,35:64]), prob=Svars$p)
-    Svars$I.np[i,1] = max(0,round(rnorm(1, N.2p, 0.05*N.2p)))
+    #N.2p=rbinom(1, size=sum(Svars$N[i,1,3:32])+sum(Svars$N[i,1,35:64]), prob=Svars$p)
+    N.2p=(sum(Svars$N[i,1,2:32])+sum(Svars$N[i,1,34:64]))*Svars$p
+    Svars$I.np[i,1] = N.2p*exp(rnorm(1,0,0.05))
   }
   return(Svars)
 }
@@ -78,9 +99,9 @@ set.ssl.pars=function(n.sites, n.yrs, SSLvital=NULL){
 set.A.array <- function(Svars,yr){
   A <- array(0,dim=c(Svars$n.sites,2*32,2*32))
   for(i in 1:Svars$n.sites){
-    A[i,1,1:32] <- 0.5*Svars$f[i,yr,]*Svars$S[i,yr,]
-    A[i,2:32,1:31] <- diag(Svars$S[i,yr,-32])
-    A[i,33,1:32] <- 0.5*Svars$f[i,yr,]*Svars$S[i,yr,]
+    A[i,1,1:32] <- Svars$f[i,yr,]*0.949*Svars$S[i,yr,] #0.949 is neonate survival
+     A[i,2:32,1:31] <- diag(Svars$S[i,yr,-32])
+    A[i,33,1:32] <- Svars$f[i,yr,]*0.949*Svars$S[i,yr,]
     A[i,34:(2*32),33:(2*32-1)] <- diag(c(Svars$mal2femSurv*Svars$S[i,yr,])[-32])
   } 
   return(A)
@@ -97,18 +118,18 @@ get.recruitment <- function(Fvars,SSB){
 #compute unfished spawning biomass per recruit
 unfished.bpr<-function(Fvars){
   n.age=length(Fvars$Mat)
-  N=rep(1,n.age)
+  N=rep(1,Fvars$n.age)
   #for(i in 1:n.age)N[i]=exp(-Fvars$M*i)
-  N = exp(-Fvars$M*c(1:n.age))
-  N[n.age]=N[n.age]/(1-exp(-Fvars$M))
+  N = exp(-Fvars$M*c(1:Fvars$n.age))
+  N[Fvars$n.age]=N[Fvars$n.age]/(1-exp(-Fvars$M))
   sum(N*Fvars$Mat*Fvars$Wgt)
 }
 
 init.fish<-function(Fvars,isite){
   N=rep(1,Fvars$n.age)
   #for(i in 1:Fvars$n.age)N[i]=exp(-Fvars$M*i)
-  N = exp(-Fvars$M*c(1:n.age))
-  N[n.age]=N[Fvars$n.age]/(1-exp(-Fvars$M))
+  N = exp(-Fvars$M*c(1:Fvars$n.age))
+  N[Fvars$n.age]=N[Fvars$n.age]/(1-exp(-Fvars$M))
   N*Fvars$R0[isite]
 }
 
@@ -125,47 +146,56 @@ set.fish.pars<-function(n.sites,n.yrs){
   for(isite in 1:n.sites)Fvars$N[isite,1,]=init.fish(Fvars,isite)
   #initialize Z - include natural mortality to start with
   Fvars$Z=array(Fvars$M,dim=c(n.sites,n.yrs,Fvars$n.age))
+  Fvars$F.ssl=matrix(0,n.sites,n.yrs)
+  Fvars$F.fleet=matrix(0,n.sites,n.yrs)
   #initialize SSB (matrix; dim = sites x years)
   Fvars$SSB=matrix(0,n.sites,n.yrs)
   Fvars$B=Fvars$SSB  #exploitable biomass
+  Fvars$X=Fvars$SSB  #exploitable biomass
   for(isite in 1:n.sites){
     Fvars$SSB[isite,1]=sum(Fvars$N[isite,1,]*Fvars$Mat*Fvars$Wgt)
     Fvars$B[isite,1]=sum(Fvars$N[isite,1,]*Fvars$Wgt*Fvars$Sel)
+    Fvars$X[isite,1]=sum(Fvars$N[isite,1,]*Fvars$Wgt*Fvars$Sel.SSL)
   }
+  Fvars$Catch.num=matrix(0,n.sites,n.yrs)
+  Fvars$Catch.wgt=Fvars$Catch.num
   Fvars
 }
 
-set.fleet.pars<-function(n.sites,n.yrs,Fvars,effort.opt){
-  FLvars=list(effort=matrix(0,n.sites,n.yrs))
-  if(effort.opt==1)FLvars$Effort=t(rdirichlet(n.yrs,alpha=rep(1,n.sites)))
-  else FLvars$Effort[,1]=Fvars$B[,1]/sum(Fvars$B[,1])
+set.fleet.pars<-function(n.sites,n.yrs,burnin){
+  FLvars=list(Effort=matrix(0,n.sites,n.yrs))
   FLvars
 }
 
+update.fleet.pars<-function(n.sites,iyr,Fvars,FLvars,sim.opts,burnin){
+  if(iyr>burnin){
+    if(sim.opts$eff==1)FLvars$Effort[,iyr]=rdirichlet(1,alpha=rep(1,n.sites))
+    else FLvars$Effort[,iyr]=Fvars$B[,iyr]/sum(Fvars$B[,iyr])
+  }
+  FLvars
+}
+                                            
+
 project.fish.1yr<-function(Fvars,Svars,FLvars,n.sites,iyr){
   #add in Stellar sea lion and  mortality sources
-  Fvars$Z[,iyr-1,]=Fvars$Z[,iyr-1,]+Fvars$delta*apply(Fvars$N[,iyr-1,],1,'sum')*Svars$B[iyr-1]*Fvars$Sel.SSL+FLvars$q*(FLvars$Effort[,iyr-1] %o% Fvars$Sel)
+  Fvars$F.fleet[,iyr-1]=FLvars$q*FLvars$Effort[,iyr-1]
+  Cur.F=Fvars$F.fleet[,iyr-1] %o% Fvars$Sel
+  Fvars$F.ssl[,iyr-1]=Svars$delta*(apply(Fvars$N[,iyr-1,],1,'sum')*Svars$B[,iyr-1])
+  Fvars$Z[,iyr-1,]=Fvars$Z[,iyr-1,]+Fvars$F.ssl[,iyr-1]%o%Fvars$Sel.SSL+Cur.F
   Fvars$N[,iyr,1]=get.recruitment(Fvars,SSB=Fvars$SSB[,iyr-1])
-  for(isite in 1:n.sites)Fvars$N[isite,iyr,2:Fvars$n.age]=Fvars$N[isite,iyr-1,1:(Fvars$n.age-1)]*Fvars$Z[isite,iyr-1,1:(Fvars$n.age-1)]
-  Fvars$N[,iyr,Fvars$n.age]=Fvars$N[,iyr,Fvars$n.age]+Fvars$N[,iyr-1,Fvars$n.age]*Fvars$Z[,iyr-1,Fvars$n.age]  #plus group survival
+  for(isite in 1:n.sites)Fvars$N[isite,iyr,2:Fvars$n.age]=Fvars$N[isite,iyr-1,1:(Fvars$n.age-1)]*exp(-Fvars$Z[isite,iyr-1,1:(Fvars$n.age-1)])
+  Fvars$N[,iyr,Fvars$n.age]=Fvars$N[,iyr,Fvars$n.age]+Fvars$N[,iyr-1,Fvars$n.age]*exp(-Fvars$Z[,iyr-1,Fvars$n.age])  #plus group survival
   #update B, SSB, etc.
   Fvars$SSB[,iyr]=Fvars$N[,iyr,]%*%(Fvars$Wgt*Fvars$Mat)
   Fvars$B[,iyr]=Fvars$N[,iyr,]%*%(Fvars$Wgt*Fvars$Sel)
+  Fvars$X[,iyr]=Fvars$N[,iyr,]%*%(Fvars$Wgt*Fvars$Sel.SSL)  
+  Catch.age=Cur.F/Fvars$Z[,iyr-1,]*(1-exp(-Fvars$Z[,iyr-1,]))*Fvars$N[,iyr-1,]
+  Fvars$Catch.num[,iyr-1]=apply(Catch.age,1,'sum')
+  Fvars$Catch.wgt[,iyr-1]=Catch.age%*%Fvars$Wgt
   Fvars
 } 
 
 
-make.A.list <- cmpfun(function(f.list, S.list, mal2femRatio){
-  K <- length(f.list)
-  n.age <- length(f.list[[1]])
-  out <- replicate(K, matrix(0,2*n.age,2*n.age), simplify=FALSE)
-  for(i in 1:K){
-    out[[i]][1,1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
-    out[[i]][2:n.age, 1:(n.age-1)] <- diag(S.list[[i]][-n.age])
-    out[[i]][(n.age+1),1:n.age] <- 0.5*f.list[[i]]*S.list[[i]]
-    out[[i]][(n.age+2):(2*n.age), (n.age+1):(2*n.age-1)] <- diag((mal2femRatio*S.list[[i]])[-n.age])
-  } 
-  return(out)
-})
+
 
 

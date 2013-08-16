@@ -25,3 +25,5 @@ logistic<-function(A,a,b){
 richards=function(age, A, m, S0, t){
   return((A^(1-m) - (A^(1-m) - S0^(1-m))*exp(-2*age*(1+m)/t))^(1/(1-m)))
 }
+
+
