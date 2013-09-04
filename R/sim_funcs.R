@@ -134,7 +134,7 @@ init.fish<-function(Fvars,isite){
 }
 
 set.fish.pars<-function(n.sites,n.yrs){
-  Fvars=list(a=c(1:10),M=0.2,h=0.8,R0=runif(n.sites,100000,5000000),sigma_R=0.5,mat.a=5,mat.b=1,wgt.a=5,wgt.b=0.7,eta1=1.3,eta2=1,kappa1=4,kappa2=10,eta1.SSL=1.3,eta2.SSL=1,kappa1.SSL=2,kappa2.SSL=8)
+  Fvars=list(a=c(1:10),M=0.2,h=0.8,R0=runif(n.sites,1000000,5000000),sigma_R=0.5,mat.a=5,mat.b=1,wgt.a=5,wgt.b=0.7,eta1=1.3,eta2=1,kappa1=4,kappa2=10,eta1.SSL=1.3,eta2.SSL=1,kappa1.SSL=2,kappa2.SSL=8)
   Fvars$n.age=length(Fvars$a)
   Fvars$Mat=logistic(A=Fvars$a,a=Fvars$mat.a,b=Fvars$mat.b)
   Fvars$Wgt=logistic(A=Fvars$a,a=Fvars$wgt.a,b=Fvars$wgt.b)

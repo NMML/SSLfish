@@ -16,7 +16,7 @@ obj_fun_SSLfish<-function(pars,fixed.vars){
         Lambda.est=sim.result$Svars$Ntot[2:fixed.vars$tsteps.1]/sim.result$Svars$Ntot[1:(fixed.vars$tsteps.1-1)]
         Lambda.est=Lambda.est[51:(fixed.vars$tsteps.1-1)]
         depletion.2000=sim.result$Svars$Ntot[fixed.vars$n.yrs-10]/250000
-        obj=obj+10000*sum((Lambda.est-Lambda.obs)^2)+(sum(I.F * (colMeans(sim.result$Fvars$F.fleet)-0.3)^2)+sum(I.F * (colMeans(sim.result$Fvars$F.ssl)-0.1)^2))/fixed.vars$n.sites+30*(depletion.2000-0.17)^2
+        obj=obj+10000*sum((Lambda.est-Lambda.obs)^2)+100*(sum(I.F * (colMeans(sim.result$Fvars$F.fleet)-0.3)^2)+sum(I.F * (colMeans(sim.result$Fvars$F.ssl)-0.1)^2))/fixed.vars$n.sites+30*(depletion.2000-0.17)^2
         if(depletion.2000<0.05)obj=obj+(0.05-depletion.2000)*200
       #}  
     }
