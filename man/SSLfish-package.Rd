@@ -12,11 +12,11 @@
 }
 \details{
   \tabular{ll}{ Package: \tab SSLfish \cr Type: \tab
-  Package\cr Version: \tab 0.1\cr Date: \tab 2013-03-06\cr
+  Package\cr Version: \tab 0.1\cr Date: \tab 2013-09-04\cr
   License: \tab Unlimited\cr LazyLoad: \tab yes\cr }
 }
 \author{
-  Devin Johnson and Paul Conn
+  Paul Conn and Devin Johnson
 
   Maintainer: Devin S. Johnson <devin.johnson@noaa.gov>
 }

@@ -1,6 +1,6 @@
 Package: SSLfish
 Type: Package
-Title: Simulateeffects of fisheries removal of prey on Steller sea lion
+Title: Simulate effects of fisheries removal of prey on Steller sea lion
     abundance
 Version: 0.1
 Date: 2013-03-06
@@ -15,3 +15,6 @@ Depends:
     compiler
 Collate:
     'SSLfish-package.R'
+    'obj_fun_SSLfish.R'
+    'sim_funcs.R'
+    'util_funcs.R'
