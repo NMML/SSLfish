@@ -2,6 +2,21 @@
 ### Simulation functions ###
 ############################
 
+#' Execute one simulation run
+#' 
+#' This function takes the arguments of \code{par} and runs the population simulation 1 time for the purposes
+#' of calibration. 
+#' 
+#' @param par Vector of simulation variables subject to calibration
+#' @param sim.opts ???
+#' @param n.sites Number of sites within the simulation
+#' @param n.yrs Number of total years in the simulation
+#' @param burnin ??? 
+#' @details This function runs a single simulation run so that the free variables in the par vector can be calibrated
+#' to provide realistic population growth and interaction between sea lions, prey and fisheries components.
+#' @author Paul Conn
+#' @export
+#' 
 run.1.sim=function(par, sim.opts, n.sites, n.yrs, burnin){
   #set.seed(12345)
   #n.sites=10
@@ -34,6 +49,19 @@ run.1.sim=function(par, sim.opts, n.sites, n.yrs, burnin){
 ### Sea lion functions ###
 ##########################
 
+#' Project sea lion populations
+#' 
+#' This function updates the sea lion population by one year.
+#' 
+#' @param Svars Named list of sea lion variables craeted from \code{\link{set.ssl.pars}}.
+#' @param yr Current year.
+#' 
+#' @details This function takes survival and natality information from the \code{Svars} object to update the 
+#' sea lion population from year 'yr' to 'yr+1'. The simulated survey sample of the population is accomplished 
+#' at the same time.
+#' @author Devin Johnson
+#' @export
+
 project.ssl.1yr=function(Svars, yr){
   # yr = current year i.e., projects from yr to yr+1
   for(k in 1:Svars$n.sites){
@@ -52,10 +80,23 @@ project.ssl.1yr=function(Svars, yr){
 }
 
 
-# Set sea lion survival and fecundity vectors
+#' Set sea lion simulation variables
+#' 
+#' @param n.sites Number of sea lion populations
+#' @param n.yrs Number of years to run simulation.
+#' @param SSLvital Optional list of scaling parameters to adjust baseline survival and fecundity
+#' from the HFYS 1970s values.
+#' @details This function sets the initial simulation variables for the sea lion populations. As a baseline 
+#' the 1970s survival and natality parameters of Holmes et al. (2007) are used to initialize the female populations.
+#' These values can be adjusted via the \code{SSLvital} argument which allows the user to provide multipliers for 
+#' these parameters on the logit scale. The male survival parameters are taken from 
+#' Calkins and Pitcher (???). The age structured mass is calculated from the fitted Richards growth models
+#' presented in Calkins and Pitcher (???) as well.
+#' @author Devin Johnson and Paul Conn
+#' @export
 set.ssl.pars=function(n.sites, n.yrs, SSLvital=NULL){
-  #data(HFYS_appendix_C) #Switch this on when package is built; remove next line
-  HFYS_appendix_C <- read.csv("data/HFYS_appendix_C.csv")
+  data(HFYS_appendix_C) #Switch this on when package is built; remove next line
+  #HFYS_appendix_C <- read.csv("data/HFYS_appendix_C.csv")
   if(is.null(SSLvital)){  ##right now, this would set the scaling parameters alpha0,beta0 to 1
     SSLvital=list(alpha0=logit(HFYS_appendix_C$S.HFYS),
                   alpha1=-1,
@@ -95,7 +136,20 @@ set.ssl.pars=function(n.sites, n.yrs, SSLvital=NULL){
   return(Svars)
 }
 
-# Create SSL Leslie projection matrix from life history params (dim = site x age x age)
+#' Set sea lion projection matrix
+#' 
+#' Takes survival and natality information from the sea lion simulation variables object and create 
+#' a Leslie projection matrix for each site.
+#' 
+#' @param Svars Named list created with the \code{\link{set.ssl.pars}} function.
+#' @param yr Current year.
+#' 
+#' @details Takes the survival and natality information for each site in year \code{yr} and places the information into a 
+#' Leslie matrix for population projection to year \code{yr}+1.
+#' @author Devin Johnson
+#' @export
+#' 
+
 set.A.array <- function(Svars,yr){
   A <- array(0,dim=c(Svars$n.sites,2*32,2*32))
   for(i in 1:Svars$n.sites){
@@ -111,11 +165,21 @@ set.A.array <- function(Svars,yr){
 ######################
 ### Fish functions ###
 ######################
+
+#' @title Calculate fish recruitment
+#' @param Fvars Named list of fish simulation variables created by call to \code{\link{set.fish.pars}}
+#' @param SSB Spawning biomass
+#' @author Paul Conn
+#' @export
+#' 
 get.recruitment <- function(Fvars,SSB){
   0.8*Fvars$R0*Fvars$h*SSB/(0.2*Fvars$phi0*Fvars$R0*(1-Fvars$h)+(Fvars$h-0.2)*SSB)*exp(rnorm(1,0,Fvars$sigma_R))
 }
 
-#compute unfished spawning biomass per recruit
+#' @title Compute unfished spawning biomass per recruit
+#' @param Fvars Named list of fish simulation variables created by call to \code{\link{set.fish.pars}}
+#' @author Paul Conn
+#' @export
 unfished.bpr<-function(Fvars){
   n.age=length(Fvars$Mat)
   N=rep(1,Fvars$n.age)
@@ -125,6 +189,12 @@ unfished.bpr<-function(Fvars){
   sum(N*Fvars$Mat*Fvars$Wgt)
 }
 
+#' @title Initialize fish abundance
+#' @param Fvars Named list of fish simulation variables created by call to \code{\link{set.fish.pars}}
+#' @param isite Integer site number
+#' @author Paul Conn
+#' @export
+#' 
 init.fish<-function(Fvars,isite){
   N=rep(1,Fvars$n.age)
   #for(i in 1:Fvars$n.age)N[i]=exp(-Fvars$M*i)
@@ -133,6 +203,13 @@ init.fish<-function(Fvars,isite){
   N*Fvars$R0[isite]
 }
 
+#' @title Initialize fish simulation variables
+#' @param n.sites Number of sites in the simulation
+#' @param n.yrs Number of total years in the simulation 
+#' @details Add more details here...
+#' @author Paul Conn
+#' @export
+#' 
 set.fish.pars<-function(n.sites,n.yrs){
   Fvars=list(a=c(1:10),M=0.2,h=0.8,R0=runif(n.sites,1000000,5000000),sigma_R=0.5,mat.a=5,mat.b=1,wgt.a=5,wgt.b=0.7,eta1=1.3,eta2=1,kappa1=4,kappa2=10,eta1.SSL=1.3,eta2.SSL=1,kappa1.SSL=2,kappa2.SSL=8)
   Fvars$n.age=length(Fvars$a)
@@ -162,11 +239,29 @@ set.fish.pars<-function(n.sites,n.yrs){
   Fvars
 }
 
+#' @title Initialize fishing fleet simulation variables
+#' @param n.sites Number of sites in the simulation
+#' @param n.yrs Number of total years in the simulation 
+#' @param burnin Number of years in the simulation before 'fishing' begins.
+#' @details Add more details here...
+#' @author Paul Conn
+#' @export
+#' 
 set.fleet.pars<-function(n.sites,n.yrs,burnin){
   FLvars=list(Effort=matrix(0,n.sites,n.yrs))
   FLvars
 }
 
+#' @title Update fishing fleet simulation variables
+#' @param n.sites Number of sites in the simulation
+#' @param iyr Current year in the simulation
+#' @param Fvars Fish population variables list created by call to \code{\link{set.fish.pars}}
+#' @param FLvars Fishing fleets variables list created by call to \code{\link{set.fleet.pars}}
+#' @param sim.opts ???
+#' @param burnin Number of years in the simulation before 'fishing' begins.
+#' @author Paul Conn
+#' @export
+#' 
 update.fleet.pars<-function(n.sites,iyr,Fvars,FLvars,sim.opts,burnin){
   if(iyr>burnin){
     if(sim.opts$eff==1)FLvars$Effort[,iyr]=rdirichlet(1,alpha=rep(1,n.sites))
@@ -174,8 +269,16 @@ update.fleet.pars<-function(n.sites,iyr,Fvars,FLvars,sim.opts,burnin){
   }
   FLvars
 }
-                                            
 
+#' @title Project fish population forward 1 year
+#' @param Fvars Fish population variables list created by call to \code{\link{set.fish.pars}}
+#' @param Svars Sea lion population variables list created by call to \code{\link{set.ssl.pars}}
+#' @param FLvars Fishing fleets variables list created by call to \code{\link{set.fleet.pars}}
+#' @param n.sites Number of sites in the simulation study
+#' @param iyr Current year in the simulation
+#' @author Paul Conn
+#' @export
+#' 
 project.fish.1yr<-function(Fvars,Svars,FLvars,n.sites,iyr){
   #add in Stellar sea lion and  mortality sources
   Fvars$F.fleet[,iyr-1]=FLvars$q*FLvars$Effort[,iyr-1]

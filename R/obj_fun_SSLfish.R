@@ -1,3 +1,11 @@
+
+#' @title Objective function for simulation calibration
+#' @param pars Simulation parameters to calibrate
+#' @param fixed.vars List of simulation parameters that are fixed
+#' @details More details to come? ....
+#' @author Paul Conn
+#' @export
+#'  
 obj_fun_SSLfish<-function(pars,fixed.vars){
   print(pars)
   pars[1]=exp(pars[1])*1E-15
