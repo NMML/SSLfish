@@ -189,10 +189,10 @@ For the moment, assume that one of the models we have introduced to describe SSL
 \begin{linenomath}
   \begin{equation}
      \label{eq:Bayes}
-     Pr(M_i | {\rm Data}) = \frac{Pr(Data|M_i)Pr(M_i)}{\sum_j Pr(Data|M_j)Pr(M_j)}.
+     Pr(M_i | {\rm Data}) = \frac{Pr({\rm Data}|M_i)Pr(M_i)}{\sum_j Pr({\rm Data}|M_j)Pr(M_j)}.
   \end{equation}
 \end{linenomath}
-For each simulation scenario and choice of dependent and independent variables, we use Eq. \ref{eq:Bayes} to calculate the posterior probability of each working hypothesis under a hypothetical real world test result, replacing $Pr(Data|M_i)$ with empirical estimates from our simulation study.  For instance, if we wish to update the posterior probability of model $M_i$ given a hypothetical real world test result of ``not significant," we simply replace $Pr(Data|M_i)$ with the proportion of simulation runs for which working hypothesis $i$ resulted in a statistically insignificant test.  Since we did not run any simulations for working hypothesis $M_1$, we assume nominal error rates (i.e., we specified that 2.5\% of tests would result in significantly positive and significantly negative statistical tests in the case that vital rates do not depend on prey biomass).
+For each simulation scenario and choice of dependent and independent variables, we use Eq. \ref{eq:Bayes} to calculate the posterior probability of each working hypothesis under a hypothetical real world test result, replacing $Pr({\rm Data}|M_i)$ with empirical estimates from our simulation study.  For instance, if we wish to update the posterior probability of model $M_i$ given a hypothetical real world test result of ``not significant," we simply replace $Pr({\rm Data}|M_i)$ with the proportion of simulation runs for which working hypothesis $i$ resulted in a statistically insignificant test.  Since we did not run any simulations for working hypothesis $M_1$, we assume nominal error rates (i.e., we specified that 2.5\% of tests would result in significantly positive and significantly negative statistical tests in the case that vital rates do not depend on prey biomass).
 
 \section{Results}
 
