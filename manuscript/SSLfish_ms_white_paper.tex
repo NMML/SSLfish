@@ -1,6 +1,8 @@
-\documentclass[nonumbib,leqno]{nrc1}
+%\documentclass[nonumbib,leqno]{nrc1}
+\documentclass[11pt]{article}
 \usepackage{amssymb, amsmath, bm, epsfig,psfrag,graphicx,caption,verbatim,url}
-\usepackage[french, english]{babel}
+\usepackage[margin=1in]{geometry} %added for white paper 
+%commented out for white paper %\usepackage[french, english]{babel}
 \usepackage{setspace}
 \usepackage{lineno}
 \usepackage{natbib}
@@ -8,59 +10,80 @@
 \usepackage{booktabs}
 %added 9/29/08
 %\usepackage[nolists]{endfloat}
-\bibpunct{(}{)}{;}{a}{}{;}
-\setlength{\mathindent}{1cm}
-\LTcapwidth=\textwidth
-\renewcommand{\tablename}{\textbf TABLE}
 
-\setcounter{page}{1}
-\volyear{XX}{201X}
-\journal{Can. J. Fish. Aquat. Sci.}
+%the following all commented out for white paper
+%\bibpunct{(}{)}{;}{a}{}{;}
+%\setlength{\mathindent}{1cm}
+%\LTcapwidth=\textwidth
+%\renewcommand{\tablename}{\textbf TABLE}
 
-\received{}
+%\setcounter{page}{1}
+%\volyear{XX}{201X}
+%\journal{Can. J. Fish. Aquat. Sci.}
+
+%\received{}
 
 \bibliographystyle{ecology}
 
 \begin{document}
 
-\title{Use and misuse of fishery and survey data to detect prey removal effects on Steller sea lions ({\it Eumetopias jubatus})}
+%the following all commented out for white paper
+%\title{Use and misuse of survey data to detect prey removal effects on Steller sea lions ({\it Eumetopias jubatus})}
 
-\author[P. B. Conn, D. S. Johnson, L. W. Fritz, B. S. Fadely]{Paul B. Conn, Devin S. Johnson, Lowell W. Fritz, Brian S. Fadely}
-\address{National Marine Mammal Laboratory, Alaska Fisheries Science Center,
+%\author[P. B. Conn, D. S. Johnson, L. W. Fritz, B. S. Fadely]{Paul B. Conn, Devin S. Johnson, Lowell W. Fritz, Brian S. %Fadely}
+%\address{National Marine Mammal Laboratory, Alaska Fisheries Science Center,
+%NOAA National Marine Fisheries Service,
+%Seattle, Washington, U.S.A. 98115}
+%\correspond{paul.conn@noaa.gov}
+
+%\shortauthor{Conn et al.}
+%\large
+%maketitle
+%{\sc Running Head}: Prey removal and Steller sea lions \bigskip
+
+%the following added for white paper
+\begin{center}
+{\bf Use and misuse of fishery and survey data to detect prey removal effects on Steller sea lions ({\it Eumetopias jubatus})}
+
+\bigskip
+
+\vspace{3in}
+
+Paul B. Conn \footnote[1]{email:paul.conn@noaa.gov}, Devin S. Johnson, Lowell W. Fritz, Brian S. Fadely
+
+\vspace{0.5in}
+
+National Marine Mammal Laboratory, Alaska Fisheries Science Center,
 NOAA National Marine Fisheries Service,
-Seattle, Washington, U.S.A. 98115}
-\correspond{paul.conn@noaa.gov}
+Seattle, Washington, U.S.A. 98115 \\
 
-\shortauthor{Conn et al.}
-\large
+\vspace{1in}
 
-
-\maketitle
-
-{\sc Running Head}: Prey removal and Steller sea lions \bigskip
 
 Sep 11, 2013
-
+\end{center}
 
 
 \clearpage
 
-\linenumbers
+%commented out for white paper \linenumbers
 
 %% ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %{\sc Summary.}
-\begin{abstract}
+
+% commented out for white paper   \begin{abstract}
+{\bf ABSTRACT} %added for white paper
 \large
 Surveys of Steller sea lions in the Gulf of Alaska and Aleutian Islands indicated a declining population through 2000, and the western stock of Steller sea lion was listed as endangered under the U.S. Endangered Species Act in 1997.  One focus of mitigation has been to limit fishing activities around Steller sea lion rookeries because of concern that Steller sea lion population dynamics depend in part upon the availability of harvested fish stocks. A
 number of studies have attempted to determine the nature of the relationship between fishing and Steller sea lions by fitting statistical models relating Steller sea lion aerial survey metrics (e.g., counts, changes in counts) to fish or fishing variables (e.g., relative abundance, catch, fishing effort), with many tests resulting in an insignificant effect of fishing.  These results, combined with parametric power analyses, recently led a team of independent experts \citep[e.g.,][]{Bernard:2011dq} to conclude that fishing is unlikely to affect Steller sea lion populations.  In this study, we conduct a more comprehensive form of power analysis where we fit a battery of statistical models to data that were simulated from hypothetical populations of Steller sea lions and fish, where sea lion survival or fecundity was explicitly written as a function of fish biomass.  We calibrated predator-prey dynamics such that fishing led to large declines in Steller sea lion populations, and then assessed whether we could detect an underlying relationship between sea lions and fish using typical survey variables.  Our analysis revealed that even under idealized study conditions (independent populations, annual sampling, a single prey species, and an unbiased fish index), that many combinations of dependent and independent variables resulted in poor power or misleading results.  For example, analyses that used fishing metrics (catch, effort) as dependent variables often led to insignificant or positive regression coefficients.  Analyses using adult survey counts as the dependent variable also performed poorly.  We found that analyses conducted with proportional changes in adult counts ($\lambda$) as the dependent variable and fish relative abundance as the dependent variable had high power to detect a relationship between sea lion survival and fish availability. Likewise, analyses relating annual sea lion pup counts to fish relative abundance had the highest power to detect a relationship between sea lion fecundity and fish availability. However, given the idealized study design, our estimates of power are undoubtedly overestimated.  Our results suggest that certain types of analyses (i.e., those using catch or fishing effort as an independent variable or adult counts as a dependent variable) should be avoided entirely, and that results of previous studies using these variables are largely uninformative regarding the effect of prey depletion on Steller sea lion populations.  Further, given a lack of analyses relating pup counts to fish relative abundance in the literature, we find that there is currently little to no information with which to judge whether prey availability affects sea lion fecundity. Future work should be devoted to relating sea lion fecundity to fish relative abundance, and in conducting more detailed simulation tests of power that include more realistic dynamics (e.g., sea lion movement between colonies, spatial autocorrelation).  We describe how results of simulation analyses can be used to help calculate Bayes factors that encapsulate belief about various working hypotheses.
 %\keywords{Steller sea lions, }
-\end{abstract}
+%commented out for white paper \end{abstract}
 
 %\begin{resume}
 %\end{resume}
 
-\keywords{Bayes factor, {\it Eumetopias jubatus}, power analysis, predator-prey model, simulation study, Steller sea lions}
+% commented out for white paper \keywords{Bayes factor, {\it Eumetopias jubatus}, power analysis, predator-prey model, simulation study, Steller sea lions}
 
 
 \clearpage
@@ -228,7 +251,7 @@ The most successful tests for correctly identifying a positive relationship betw
 
 Bayes factors calculated from our simulation results provide a measure of the weight of evidence for various working hypotheses about SSL and prey availability given the results of a hypothetical real-world hypothesis test (Table \ref{tab:BF}).  For instance, in an identical study system where fishing effort is randomly distributed (an admittedly ideal case), and an investigator conducts an analysis attempting to relate adult SSL survey counts to fishery CPUE and obtains an insignificant result, the Bayes factors of 1.00 for working hypothesis 2 (survival is related to prey availability) and 0.85 for working hypothesis 3 (fecundity) are close enough to 1.0 to suggest that our posterior belief in the three working hypotheses should be about the same as our prior beliefs.  As such, these types of tests are uninformative about the prey availability hypothesis.
 
-One of the most effective tests related changes in adult counts from year to year ($\lambda$) to CPUE.  In this case, a significantly positive hypothesis test results in large Bayes factors for working hypotheses 2 and 3 (Table \ref{tab:BF}), a desired result.  An insignificant hypothesis test provides increased evidence for the null hypothesis especially in relation to the survival-prey availability hypothesis, although the ``rule of thumb" that values of $B_{ij}$ between 1/3 and 3 provide little evidence with which to distinguish models $i$ and $j$ \citep{KassRaftery1995} still suggests some support for the fecundity-prey availability hypothesis ($B_{31}=0.41$ for the random effort scenario and $B_{31}=0.55$ for the proportional effort scenario).  Similarly, regressing pup counts on CPUE provides evidence for a pup-fecundity relationship when the regression coefficient is significantly positive ($B_{31}=31.6$ and $B_{31}=36.8$ for the random and proportional effort scenarios, respectively), but failure to detect a significant slope does not inobviate the survival-prey availability hypothesis ($B_{21}=0.98$ and $B_{21}=0.24$ depending on the effort scenario).
+One of the most effective tests related changes in adult counts from year to year ($\lambda$) to CPUE.  In this case, a significantly positive hypothesis test results in large Bayes factors for working hypotheses 2 and 3 (Table \ref{tab:BF}), a desired result.  An insignificant hypothesis test provides increased evidence for the null hypothesis especially in relation to the survival-prey availability hypothesis, although the ``rule of thumb" that values of $B_{ij}$ between 1/3 and 3 provide little evidence with which to distinguish models $i$ and $j$ \citep{KassRaftery1995} still suggests some support for the fecundity-prey availability hypothesis ($B_{31}=0.41$ for the random effort scenario and $B_{31}=0.55$ for the proportional effort scenario).  Similarly, regressing pup counts on CPUE provides evidence for a pup-fecundity relationship when the regression coefficient is significantly positive ($B_{31}=31.6$ and $B_{31}=36.8$ for the random and proportional effort scenarios, respectively), but failure to detect a significant slope does not inobviate the survival-prey availability hypothesis ($B_{21}=0.98$ and $B_{21}=0.24$ depending on the effort scenario).  
 
 One advantage to using Bayes factors is that they are multiplicative when applied to independent datasets.  In our case, test results are not necessarily independent, because dependent and independent variables are collected on the same populations (e.g., SSL counts, fishery variables, etc.).  However, we can still evaluate Eq. \ref{eq:BF} by considering the joint probability of obtaining more than one type of test result.  For instance, if an investigator conducted both of the aforementioned tests and received two insignificant regression coefficients, the combined Bayes factors are $B_{21}=0.0$ and $B_{31}=0.08$ for the random effort scenario and $B_{21}=0.05$ and $B_{31}=0.05$ for the proportional effort scenario, lending much more support to the null model of no prey availability effect on SSL demography.
 
@@ -251,7 +274,6 @@ the patterns of observed population decline exhibited in SSL datasets from 1976-
 Our point in this paper is not to advocate a particular position regarding the ultimate effects of fishing on SSL populations.  In addition, the suite of factors responsible for the SSL decline are likely different from those involved in their slow and uneven recovery \citep{AtkinsonEtAl2008}, and it is still an open question with several possible explanations (e.g., reduced prey availability, a shift in the relative composition of prey abundance, increase in killer whale predation, environmental contaminants, or some combination thereof).  Our results simply indicate that a lack of statistical significance in previous studies cannot be used as credible scientific evidence against the prey availability hypothesis, at least as far as fecundity is concerned.  Our results do suggest the possibility for relating adult survival to CPUE or other index of fish relative abundance, provided that CPUE is constructed in a way that it is linearly related to absolute abundance.  However, further study would be needed to determine the power of such tests under more realistic sampling conditions (e.g., reduced frequency of surveys, lack of randomization, lack of independence among fish and SSL populations, etc.).
 
 Our results suggest several avenues of future work in assessing the relationship between fish, SSL, and fisheries.  First, additional power analyses should be conducted that are more specific to the actual western SSL stock.  This could include features such as non-independence (e.g., via SSL movement), a more realistic model for fishery dynamics that factors in economics, and more realistic spatial distributions for fish and SSL populations.  Such an analysis should focus on various consequences of fish availability on SSL demography, rather than relying on F- or z-tests \citep[e.g.,][]{Calkins:2008ve,Hui:2011uq,Soboleff:2006fk} that paint an overly optimistic picture of the power of a test to reveal meaningful biological interactions.  The outcome of such an experiment, when combined with analysis of actual SSL survey data, would help in calculating more realistic Bayes factors that embody belief in various working hypotheses. These analyses would also benefit from spatially explicit calculations of fish relative abundance.
-
 
 
 
@@ -373,8 +395,8 @@ Pup survey count  & & $P_{t,k}$ & & Count of SSL pups during the simulated aeria
 
 \pagebreak
 
-\begin{longtable}{p{2.5cm}lp{2.5cm}l p{8cm}}
-\caption[Parameters]{\setstretch{2} \large Definitions and values for simulation input variables.  The subscript $\dag$
+\begin{longtable}{p{2.5cm}lp{2.7cm}l p{8cm}}
+\caption[Parameters]{\large Definitions and values for simulation input variables.  The subscript $\dag$
 indicates values that were fixed as an outcome of calibration exercises; remaining simulation inputs were
 set a priori.}
 \label{tab:inputs} \\
@@ -443,10 +465,10 @@ $ q ^\dag $ & & $11.80,11.02$ & & Catchability coefficient relating fishery effo
 \end{longtable}
 
 \begin{table}
-\caption{\setstretch{2} \large Objective function used to calibrate the joint model for SSL, fish, and
+\caption{\large Objective function used to calibrate the joint model for SSL, fish, and
 fishery dynamics.}
 \label{tab:objfun}
-\begin{tabular}{llp{3cm}lp{6cm}}
+\begin{tabular}{llp{4cm}lp{7cm}}
 \\
 \hline \hline
 Component & & Definition & & Formula \\
@@ -467,7 +489,7 @@ $\Lambda_4$ & & Penalty for over-depletion & & $ \Lambda_4 = \left\{ \begin{arra
 \end{table}
 
 \begin{longtable}{lllllrrr}
-\caption[Sim1]{\setstretch{2} \large Proportion of simulations that resulted in significantly negative (``Sig neg"), insignificant (``Not sig"), or significantly positive (``Sig pos") p-values (at $\alpha=0.05$) when relating dependent to independent variables via a generalized linear mixed pseudo-model.  Dependent variables consisted of different combinations of SSL ``Age" category (pup or adult), and variable ``Type" (either a raw count or finite $\lambda$ value), while independent variables (``Indep") consisted of either catch per unit effort (``cpue"), fishery landings (``catch"), or fishery effort (``effort").  A total of four simulation scenarios were considered, depending on whether SSL dynamics depended on prey through survival (Dem=``surv") or fecundity (Dem=``fec"), and whether fishery effort was distributed randomly (Eff=``rand") or proportional to fish biomass (Eff=``prop").  Values were calculated from 1000 simulations at each design point.}
+\caption[Sim1]{\large Proportion of simulations that resulted in significantly negative (``Sig neg"), insignificant (``Not sig"), or significantly positive (``Sig pos") p-values (at $\alpha=0.05$) when relating dependent to independent variables via a generalized linear mixed pseudo-model.  Dependent variables consisted of different combinations of SSL ``Age" category (pup or adult), and variable ``Type" (either a raw count or finite $\lambda$ value), while independent variables (``Indep") consisted of either catch per unit effort (``cpue"), fishery landings (``catch"), or fishery effort (``effort").  A total of four simulation scenarios were considered, depending on whether SSL dynamics depended on prey through survival (Dem=``surv") or fecundity (Dem=``fec"), and whether fishery effort was distributed randomly (Eff=``rand") or proportional to fish biomass (Eff=``prop").  Values were calculated from 1000 simulations at each design point.}
 \label{tab:sim1} \\
 \hline \hline
 Dem & Eff & Age & Type & Indep & Sig neg & Not sig & Sig pos \\
@@ -528,14 +550,14 @@ surv & rand & pup & count & cpue & 0.02 & 0.93 & 0.05 \\
   fec & prop & ad & count & effort & 0.00 & 0.00 & 1.00 \\
   fec & prop & ad & lam & cpue & 0.01 & 0.52 & 0.47 \\
   fec & prop & ad & lam & catch & 0.00 & 0.60 & 0.40 \\
-  fec & prop & ad & lam & effort & 0.00 & 1.00 & 0.00 \\
+  fec & prop & ad & lam & effort & 0.00 & 1.00 & 0.00 \\ 
 \hline
 \end{longtable}
 
 \pagebreak
 
 \begin{longtable}{llllrrrrrr}
-\caption[Sim1]{\setstretch{2} \large Bayes factors, $B_{ij}$, describing the relative support of working hypothesis $i$ relative to hypothesis $j$ given a (1) results of our simulation study, and (2) the results of a hypothetical real-world statistical test [either significantly negative (``Sig neg"), insignificant (``Not sig"), or significantly positive (``Sig pos") at $\alpha=0.05$]. Bayes factors measure strength of evidence for the underlying model expressing SSL survival as a function of prey availability ($i=2$) or the model expressing SSL fecundity as a function of prey availability ($i=3$) relative to the null hypothesis of no effect of prey availability ($i=1$).  Bayes factors greater that 1.0 indicate increased support, while values less than 1.0 indicate reduced support relative to the null model.  Results are dependent upon the types of dependent and independent variables used in analyses; Dependent variables relied on SSL ``Age" category (pup or adult), and variable ``Type" (either a raw count or finite $\lambda$ value), while independent variables (``Indep") consisted of either catch per unit effort (``cpue"), fishery landings (``catch"), or fishery effort (``effort").  Results also varied depending on whether fishery effort was distributed randomly (Eff=``rand") or proportional to fish biomass (Eff=``prop").}
+\caption[BF]{\large Bayes factors, $B_{ij}$, describing the relative support of working hypothesis $i$ relative to hypothesis $j$ given a (1) results of our simulation study, and (2) the results of a hypothetical real-world statistical test [either significantly negative (``Sig neg"), insignificant (``Not sig"), or significantly positive (``Sig pos") at $\alpha=0.05$]. Bayes factors measure strength of evidence for the underlying model expressing SSL survival as a function of prey availability ($i=2$) or the model expressing SSL fecundity as a function of prey availability ($i=3$) relative to the null hypothesis of no effect of prey availability ($i=1$).  Bayes factors greater that 1.0 indicate increased support, while values less than 1.0 indicate reduced support relative to the null model.  Results are dependent upon the types of dependent and independent variables used in analyses; Dependent variables relied on SSL ``Age" category (pup or adult), and variable ``Type" (either a raw count or finite $\lambda$ value), while independent variables (``Indep") consisted of either catch per unit effort (``cpue"), fishery landings (``catch"), or fishery effort (``effort").  Results also varied depending on whether fishery effort was distributed randomly (Eff=``rand") or proportional to fish biomass (Eff=``prop").}
 \label{tab:BF} \\
 \hline \hline
     & & & & \multicolumn{2}{c}{\underline{Sig neg}} & \multicolumn{2}{c}{\underline{Not sig}} & \multicolumn{2}{c}{\underline{Sig pos}} \\
@@ -584,7 +606,7 @@ rand & pup & count & cpue & 0.92 & 0.04 & 0.98 & 0.22 & 1.88 & 31.56 \\
 \begin{center}
 \includegraphics[width= \textwidth]{At_age_plots.pdf}
 \end{center}
-\caption{\setstretch{2} A depiction of fishery selectivity-at-age (`Fleet selectivity'), Steller sea lion selectivity (`SSL selectivity'), proportion of sexually
+\caption{A depiction of fishery selectivity-at-age (`Fleet selectivity'), Steller sea lion selectivity (`SSL selectivity'), proportion of sexually
 mature fish by age (`Maturity'), and weight-at-age (`Weight'; standardized to have a maximum of 1.0) used
 in SSL-fisheries simulation analyses.}
 \label{fig:at_age}
@@ -594,7 +616,7 @@ in SSL-fisheries simulation analyses.}
 \begin{center}
 \includegraphics[width= \textwidth]{sim_diagram.pdf}
 \end{center}
-\caption{\setstretch{2} A depiction of the simulation structure used in analysis of Steller sea lion (SSL) and fishery
+\caption{A depiction of the simulation structure used in analysis of Steller sea lion (SSL) and fishery
  variables.  At the beginning of each simulation, predator (SSL) and prey (fish) populations are initialized at stable age distributions. After 100 years of simulating predator-prey dynamics to equalize numbers and induce variability in age structure due to fish recruitment stochasticity, fishing is introduced.  Following 10 years of fishing with no survey, simulated aerial surveys are assumed to occur for the next 35 years (at which time catch and CPUE are also calculated).  Finally, after simulated time series are gathered, data are analyzed via generalized linear mixed models to summarize relationships between SSL and fishing variables.}
 \label{fig:sim_diagram}
 \end{figure}
@@ -603,7 +625,7 @@ in SSL-fisheries simulation analyses.}
 \begin{center}
 \includegraphics[width= \textwidth]{sim_trajectories.pdf}
 \end{center}
-\caption{\setstretch{2}  Examples of simulated SSL time series resulting from calibrated models for SSL, fish, and fishery dynamics.  Five time series are displayed for each simulation scenario, with thin black lines giving total SSL numbers (in 10,000s), and thin grey lines giving scaled fish biomass.  Thick lines represent the mean trajectory over each of the 5 simulations presented.  Top panels (A and B) are representative time series for the case when SSL survival is a function of available fish biomass, while bottom panels (C and D) represent scenarios where available fish biomass affects SSL fecundity.  Left hand panels (A and C) are for cases where fishing effort is randomly allocated among island populations, while right hand panels (B and D) are for cases where fishing effort is allocated proportionally to fish abundance.}
+\caption{Examples of simulated SSL time series resulting from calibrated models for SSL, fish, and fishery dynamics.  Five time series are displayed for each simulation scenario, with thin black lines giving total SSL numbers (in 10,000s), and thin grey lines giving scaled fish biomass.  Thick lines represent the mean trajectory over each of the 5 simulations presented.  Top panels (A and B) are representative time series for the case when SSL survival is a function of available fish biomass, while bottom panels (C and D) represent scenarios where available fish biomass affects SSL fecundity.  Left hand panels (A and C) are for cases where fishing effort is randomly allocated among island populations, while right hand panels (B and D) are for cases where fishing effort is allocated proportionally to fish abundance.}
 \label{fig:sim_trajectories}
 \end{figure}
 \end{document}
