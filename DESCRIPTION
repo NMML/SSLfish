@@ -11,6 +11,8 @@ Description: This package simultaneously simulates a sea lion population, prey
     validity of approaches used previously in the literature to assess the
     effects of fishing on the abundance of Steller sea lions.
 License: Unlimited
+Depends:
+    gtools
 Collate:
     'SSLfish-package.R'
     'obj_fun_SSLfish.R'
