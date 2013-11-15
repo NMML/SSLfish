@@ -2,8 +2,8 @@ Package: SSLfish
 Type: Package
 Title: Simulate effects of fisheries removal of prey on Steller sea lion
     abundance
-Version: 0.1
-Date: 2013-03-06
+Version: 0.11
+Date: 2013-11-15
 Author: Paul Conn and Devin Johnson
 Maintainer: Devin Johnson <devin.johnson@noaa.gov>
 Description: This package simultaneously simulates a sea lion population, prey
@@ -11,8 +11,6 @@ Description: This package simultaneously simulates a sea lion population, prey
     validity of approaches used previously in the literature to assess the
     effects of fishing on the abundance of Steller sea lions.
 License: Unlimited
-Depends:
-    compiler
 Collate:
     'SSLfish-package.R'
     'obj_fun_SSLfish.R'
