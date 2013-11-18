@@ -12,7 +12,7 @@
 }
 \details{
   \tabular{ll}{ Package: \tab SSLfish \cr Type: \tab
-  Package\cr Version: \tab 0.1\cr Date: \tab 2013-09-04\cr
+  Package\cr Version: \tab 0.11\cr Date: \tab 2013-11-15\cr
   License: \tab Unlimited\cr LazyLoad: \tab yes\cr }
 }
 \author{

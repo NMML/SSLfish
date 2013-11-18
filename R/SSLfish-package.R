@@ -5,7 +5,7 @@
 #' the effects of fishing on the abundance of Steller sea lions. 
 #'  
 #' \tabular{ll}{ Package: \tab SSLfish \cr Type: \tab Package\cr Version: \tab
-#' 0.1\cr Date: \tab 2013-09-04\cr License: \tab Unlimited\cr LazyLoad: \tab
+#' 0.11\cr Date: \tab 2013-11-15\cr License: \tab Unlimited\cr LazyLoad: \tab
 #' yes\cr }
 #' 
 #' @name SSLfish-package
@@ -25,3 +25,14 @@ NULL
 #' reveals long-term declines in the natality of western Steller sea lions. Ecological Applications 17:2214-2232.
 #' Repreint available at: \url{http://alaskafisheries.noaa.gov/protectedresources/stellers/esa/biop/draft/holmes_etal_2007_ssl_agestructure.pdf}
 NULL
+
+.onAttach <- function(library, pkgname)
+{
+  info <-utils::packageDescription(pkgname)
+  package <- info$Package
+  version <- info$Version
+  date <- info$Date
+  packageStartupMessage(
+    paste("\n",paste(package, version, paste("(",date, ")", sep=""), "\n"))
+  )
+}

@@ -261,6 +261,7 @@ set.fleet.pars<-function(n.sites,n.yrs,burnin){
 #' @param burnin Number of years in the simulation before 'fishing' begins.
 #' @author Paul Conn
 #' @export
+#' @import gtools
 #' 
 update.fleet.pars<-function(n.sites,iyr,Fvars,FLvars,sim.opts,burnin){
   if(iyr>burnin){
